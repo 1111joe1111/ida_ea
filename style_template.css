@@ -1,0 +1,164 @@
+/*IDA EA START*/
+
+QWidget, QMenuBar, QMenuBar::item, QTabBar::tab, QTextEdit, QTableView  {
+    background-color: {0};
+    color: {1};
+}
+
+QCheckBox {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+QTextEdit {
+    border: 0px solid white;
+}
+
+QMenu::item:selected, QMenuBar::item:selected {
+    background-color: {4};
+    color: black;
+}
+
+
+QTreeView::item:selected, QListView::item:selected, QTableView::item:selected {
+    background-color: {4};
+    color: black;
+}
+
+QLineEdit {
+    border: 1px solid {0};
+    min-height: 20px;
+    border-radius: 2px;
+}
+
+
+QTabBar::tab:selected {
+    border: 1px solid {8};
+
+}
+
+QHeaderView::section {
+    background-color: {5};
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 6px;
+    border-style: solid;
+    border-left-width: 1px;
+    border-right-width: 0px;
+    border-left-color: #212121;
+
+}
+
+QTableView {
+    border: 0px solid {0};
+}
+
+QTableCornerButton::section {
+    background: {0};
+}
+
+
+IDAView, hexview_t, CustomIDAMemo {
+    border: none;
+}
+
+QScrollBar {
+    background-color: {0};
+    width: 20px;
+    margin: 0 0 0 0;
+}
+
+QScrollBar::sub-line, QScrollBar::add-line {
+    width: 0;
+    height: 0;
+}
+
+QScrollBar::add-page, QScrollBar::sub-page {
+    background: none;
+}
+
+QScrollBar::handle:vertical {
+    min-height: 20px;
+}
+
+QScrollBar::handle:horizontal {
+    min-width: 20px;
+}
+
+QScrollBar::handle {
+    background-color: {2};
+    margin: 3px;
+    border-radius: 7px;
+}
+
+QToolBar {
+    border: none;
+}
+
+QPushButton {
+    border: 1px solid {3};
+    text-align: center;
+    min-height: 20px;
+    min-width: 50px;
+    padding: 0 6px 0 6px;
+    border-radius: 2px;
+}
+
+QComboBox {
+    border: 1px solid {0};
+}
+
+QComboBox > QLineEdit, QComboBox > QLineEdit:hover, QComboBox > QLineEdit:focus {
+    border: none;
+    min-height: default;
+}
+
+QLineEdit:hover, QLineEdit:focus, QComboBox:hover, QComboBox:focus, QPushButton:hover, QPushButton:default, QPushButton:pressed {
+    border: 1px solid {7};
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+    border-left-width: 0px;
+}
+
+/* Close, maximize and undock button for dock widgets */
+IDADockWidget > QWidget > QAbstractButton {
+    background-color: {2};
+    border-radius: 3px;
+}
+
+QRadioButton, QLabel, QCheckBox {
+    background: transparent;
+}
+
+TNavBand > QPushButton, RegJumpButton {
+    min-height: 0;
+    min-width: 0;
+    padding: 0 0 0 0;
+    border: none;
+}
+
+EditContainer, ChooserContainer, QGroupBox, QListView, QTreeView {
+    border: 1px solid {8};
+    border-radius: 2px;
+}
+
+QGroupBox {
+    margin-top: 5px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+}
+
+CLIWidget > QGroupBox > QPushButton
+{
+    border: none;
+}
+
+CLIWidget > QGroupBox {
+    margin-top: 0;
+}
