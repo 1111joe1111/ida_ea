@@ -61,7 +61,7 @@ def send(addr=None, code=None):
         if func == "result":
             break
         if func == "error":
-            print args
+            print "error: " + str(args)
             error = True
             break
 
@@ -88,6 +88,16 @@ def ea_emulate():
 
     global form
     global a
+    global server_running
+
+    print "JIASFJISFA"
+
+    if not server_running:
+        # Launch emulation server as a seperate process (see top for details why)
+        # Python subprocess module is broken in IDA so the os.system function is used instead
+        # (This requires a new Thread because the os.system function blocks by default)
+        Thread(target=system, args=("python \"%sea_emu_server.py\"" % root_dir,)).start()
+        server_running = True
 
     a = QtGui.QFrame()
     form = Emulate_UI()
@@ -126,8 +136,6 @@ h = None
 hooked = False
 form = None
 a = None
+server_running = False
 
-# Launch emulation server as a seperate process (see top for details why)
-# Python subprocess module is broken in IDA so the os.system function is used instead
-# (This requires a new Thread because the os.system function blocks by default)
-Thread(target=system, args=("python \"%sea_emu_server.py\"" % root_dir,)).start()
+

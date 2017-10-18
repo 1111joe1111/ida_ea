@@ -9,7 +9,7 @@ from copy import copy
 from PySide import QtCore, QtGui
 from ea_utils import get_mem_recursive, parse_mem, get_bits
 from ea_UI import Cmd_UI
-
+from re import match
 
 def get(addr, int_size, n=20):
 
@@ -33,10 +33,7 @@ def find(arg, int_size):
     addr = 0
 
     for x in range(100):
-
         newAddr = FindText(addr, SEARCH_DOWN, 0, 0, arg)
-        print hex(newAddr)
-        print hex(addr), hex(newAddr)
         if newAddr != 0xffffffffffffffffL:
             if newAddr > addr:
                 addr = newAddr
@@ -60,25 +57,41 @@ def find(arg, int_size):
     form.textEdit.verticalScrollBar().setValue(form.textEdit.verticalScrollBar().maximum())
 
 
+
+
+
 def do_cmd():
 
     int_size = 4 if get_bits() else 8
     cmd = form.lineEdit.text()
     form.textEdit.append(copy(style) + "<span>&#x25B6; " + cmd +"</span><br>")
-    cmd = [i for i in cmd.split(" ") if i]
 
-    if cmd[0][0] == "x":
-        length = to_int(cmd[0][1:])
-        addr = to_int(cmd[1])
+    match_read = match(r"(x\\|x)([0-9]*) *(.*)", cmd)
+    match_search = match(r"searchmem *(.*)", cmd)
+    match_step = match(r"si", cmd)
+    match_continue = match(r"c|r", cmd)
+
+
+    if match_read:
+        length = to_int(match_read.group(2))
+        addr = to_int(match_read.group(3))
+
         get(addr, int_size, length)
 
-    elif cmd[0] == "searchmem":
-        print cmd[1]
+    elif match_search:
+        cmd = match_search.group(1)
 
-        if cmd[1][0] == "\"" and cmd[1][-1] == "\"":
-            cmd[1] = cmd[1][1:-1]
+        if cmd[0] == "\"" and cmd[-1] == "\"":
+            cmd = cmd[1:-1]
 
-        find(str(cmd[1]), int_size)
+        find(str(cmd), int_size)
+
+    elif match_step:
+        step_into()
+
+    elif match_continue:
+        continue_process()
+
 
 
 def to_int(i):
