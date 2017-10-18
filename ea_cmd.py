@@ -3,6 +3,7 @@
 from idaapi import *
 from idc import *
 from idautils import *
+from api_funcs import *
 from copy import copy
 from PySide import QtCore, QtGui
 from ea_utils import get_mem_recursive, parse_mem, get_bits
@@ -55,10 +56,6 @@ def find(arg, int_size):
     form.textEdit.append(string)
     form.textEdit.verticalScrollBar().setValue(form.textEdit.verticalScrollBar().maximum())
 
-
-
-
-
 def do_cmd():
 
     int_size = 4 if get_bits() else 8
@@ -70,7 +67,8 @@ def do_cmd():
     match_step = match(r"si", cmd)
     match_continue = match(r"continue|run|c|r", cmd)
     match_finish = match(r"finish|fini", cmd)
-    match_break = match(r"break|b *(.*)", cmd)
+    match_break = match(r"(break|b) *(.*)", cmd)
+    match_delete = match(r"(delete|delet|del) *(.*)", cmd)
 
 
     if match_read:
@@ -96,6 +94,11 @@ def do_cmd():
     elif match_continue:
         continue_process()
 
+    elif match_break:
+        add_bp(to_int(match_break.group(2)))
+
+    elif match_delete:
+        del_bpt(to_int(match_delete.group(2)))
 
 
 def to_int(i):
