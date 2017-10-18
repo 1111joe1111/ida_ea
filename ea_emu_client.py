@@ -90,8 +90,6 @@ def ea_emulate():
     global a
     global server_running
 
-    print "JIASFJISFA"
-
     if not server_running:
         # Launch emulation server as a seperate process (see top for details why)
         # Python subprocess module is broken in IDA so the os.system function is used instead
