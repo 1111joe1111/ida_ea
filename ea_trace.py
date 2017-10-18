@@ -44,9 +44,9 @@ def dump():
     print trace
     df = pd.DataFrame(trace,columns=["time", "name"] + regs)
     df.set_index(pd.DatetimeIndex(df["time"]))
-    dump_loc = path + "/" + str(time.time()) + ".pickle"
+    dump_loc = path + "/" + str(int(time.time())) + ".pickle"
     df.to_pickle(dump_loc)
-    ea_warning(dump_loc)
+    ea_warning("Dumped IDA Trace to: " + dump_loc)
 
 
 
