@@ -19,7 +19,7 @@ def get_offsets(bits):
     except:
         if bits == 32:
             print ("Warning: Couldn't compile temp C program for x86 architecture.\n"
-                   "If you are on x64 try installing mulitlib (sudo apt-get install gcc-multilib on Debian)\n"
+                   "If you are on x64 try installing mulitlib (sudo apt-get install libc6:i386 && libc6-dbg:i386 on Debian)\n"
                    "to resolve this.\n"
                    "If you are only debugging 64bit programs, ignore this warning and use only 64bit offsets.")
         else:

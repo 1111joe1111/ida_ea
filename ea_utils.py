@@ -131,7 +131,7 @@ def save_config():
         dump(config, w)
 
 
-root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"))] + "/"
+root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
 
 with open(root_dir + "config.json", "r") as w:
     config = load(w)

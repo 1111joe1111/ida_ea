@@ -123,7 +123,6 @@ def update_chunk(c):
 
 def fill_field(malloc_state, field, mem, current, list=False):
 
-
     field_size = getattr(malloc_state,field).size
 
     if list:
@@ -141,6 +140,9 @@ def fill_field(malloc_state, field, mem, current, list=False):
 def get_malloc_state():
 
     main_arena = malloc_state(main_arena_addr)
+
+    print main_arena
+
     mem = dbg_read_memory(main_arena.address, 2200)
     current = 0
     fields = ["mutex", "flags", "fastbinsY", "top", "last_remainder", "bins",
@@ -243,7 +245,7 @@ def select_chunk(item, chunkmap):
     form.textEdit_2.insertHtml(string)
 
 
-def set_config():
+def set_config(restart):
 
     global b
 
@@ -252,10 +254,10 @@ def set_config():
     form.setupUi(b)
     b.show()
 
-    form.pushButton.clicked.connect(lambda: get_text(form))
+    form.pushButton.clicked.connect(lambda: get_text(form, restart))
 
 
-def get_text(form):
+def get_text(form, restart):
 
     global malloc_offset
     global main_arena_offset
@@ -272,7 +274,9 @@ def get_text(form):
     main_arena_offset, malloc_offset = offsets[:2] if int_size == 8 else offsets[2:]
     b.close()
     save_config()
-    ea_heap()
+
+    if restart:
+        ea_heap()
 
 
 def ea_heap():
@@ -293,28 +297,39 @@ def ea_heap():
         form.pushButton.clicked.connect(a.close)
     else:
         if main_arena_offset == 0  and malloc_offset == 0:
-            set_config()
+            set_config(True)
         else:
-            base_addr = get_main_arena()
-            malloc_addr = base_addr + malloc_offset
-            main_arena_addr = base_addr + main_arena_offset
+            if not is_debugger_on():
+                print "Application must be running for Heap Trace"
+            else:
+                base_addr = get_main_arena()
 
-            a = QtGui.QWidget()
-            form = Heap_UI()
-            form.setupUi(a)
-            form.textEdit.setReadOnly(True)
-            form.textEdit_2.setReadOnly(True)
-            a.show()
-            hook = Hook()
-            hook.hook()
-            a.closeEvent = lambda x: hook.unhook()
-            form.listWidget.itemClicked.connect(select_bin)
-            form.listWidget_3.itemClicked.connect(select_bin)
-            form.listWidget_2.itemClicked.connect(lambda x: select_chunk(x, chunkmap))
-            form.listWidget_4.itemClicked.connect(lambda x: select_chunk(x, chunkmap_2))
-            # form.checkBox.stateChanged.connect(lambda x: (
-            #     add_bp(malloc_addr, 10), hook.hook()) if x else (add_bp(malloc_addr, 2), hook.unhook()))
-            get_malloc_state()
+                if not base_addr:
+                    print "Could not find C Library in Segments."
+
+                else:
+                    malloc_addr = base_addr + malloc_offset
+                    main_arena_addr = base_addr + main_arena_offset
+
+                    a = QtGui.QWidget()
+                    form = Heap_UI()
+                    form.setupUi(a)
+                    form.textEdit.setReadOnly(True)
+                    form.textEdit_2.setReadOnly(True)
+                    a.show()
+                    hook = Hook()
+                    hook.hook()
+                    a.closeEvent = lambda x: hook.unhook()
+                    form.listWidget.itemClicked.connect(select_bin)
+                    form.listWidget_3.itemClicked.connect(select_bin)
+                    form.listWidget_2.itemClicked.connect(lambda x: select_chunk(x, chunkmap))
+                    form.listWidget_4.itemClicked.connect(lambda x: select_chunk(x, chunkmap_2))
+                    form.pushButton_2.clicked.connect(lambda :set_config(False))
+                    form.pushButton.clicked.connect(get_malloc_state)
+
+                    # form.checkBox.stateChanged.connect(lambda x: (
+                    #     add_bp(malloc_addr, 10), hook.hook()) if x else (add_bp(malloc_addr, 2), hook.unhook()))
+                    get_malloc_state()
 
 
 chunk_template = read(root_dir + "chunk_template.html")

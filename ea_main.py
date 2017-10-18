@@ -5,8 +5,12 @@ from ea_emu_client import ea_emulate
 from ea_trace import ea_trace
 from ea_skin import ea_reskin, apply_initial_skin
 from ea_cmd import ea_cmd
+from ea_utils import config
 
-apply_initial_skin()
+
+if config["apply_skin_on_startup"]:
+    apply_initial_skin()
+
 menu_bar = next(i for i in QtGui.qApp.allWidgets() if isinstance(i, QtGui.QMenuBar))
 menu = menu_bar.addMenu("IDA EA")
 menu.addAction("Viewer").triggered.connect(ea_view)
