@@ -196,8 +196,6 @@ def server():
         res = conn.recv(0x5000)
         emu, (addr, code, bits, server_print) = loads(res)
 
-        print server_print
-
         if emu != "emu": break
         conn.send(dumps(("result", emulate(addr, code, bits))))
         conn.close()

@@ -54,7 +54,14 @@ def send(addr=None, code=None):
             update_bpt(bp)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((TCP_IP, TCP_PORT))
+
+        try:
+            s.connect((TCP_IP, TCP_PORT))
+        except socket.error:
+            Thread(target=system, args=("python \"%sea_emu_server.py\"" % root_dir,)).start()
+            sleep(0.5)
+            s.connect((TCP_IP, TCP_PORT))
+
         s.send(dumps(("emu", (addr,code, get_bits(), server_print))))
         error = False
 
@@ -100,6 +107,18 @@ def send(addr=None, code=None):
                     MakeComm(c, (comment if comment else "").ljust(10) + " e: " + "No reg changes")
 
 
+def launch_server():
+
+    # Launch emulation server as a seperate process (see top for details why)
+    # Python subprocess module is broken in IDA so the os.system function is used instead
+    # (This requires a new Thread because the os.system function blocks by default)
+
+    global server_running
+
+    Thread(target=system, args=("python \"%sea_emu_server.py\"" % root_dir,)).start()
+    server_running = True
+
+
 
 def ea_emulate():
 
@@ -108,11 +127,7 @@ def ea_emulate():
     global server_running
 
     if not server_running:
-        # Launch emulation server as a seperate process (see top for details why)
-        # Python subprocess module is broken in IDA so the os.system function is used instead
-        # (This requires a new Thread because the os.system function blocks by default)
-        Thread(target=system, args=("python \"%sea_emu_server.py\"" % root_dir,)).start()
-        server_running = True
+        launch_server()
 
     a = QtGui.QFrame()
     form = Emulate_UI()
