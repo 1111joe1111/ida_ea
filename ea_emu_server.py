@@ -118,6 +118,8 @@ def get_state(uc):
 
 def emulate(address=False, code=False, _32_bits=True):
 
+
+
     if found_capstone and found_unicorn:
 
         global instructions
@@ -172,16 +174,15 @@ def emulate(address=False, code=False, _32_bits=True):
                 print e
                 # raw_input()
 
-        return annotations
+        return "result", annotations
 
     else:
         found_neither = True if not found_unicorn and not found_capstone else False
         error = ("Could not find " +
-                 "Capstone or Unicorn" if found_neither else "Capstone" if not found_capstone else "Unicorn" +
-                 " in your Python Library, Please install " + "them" if found_neither else "it" +
+                 ("Capstone or Unicorn" if found_neither else "Capstone" if not found_capstone else "Unicorn") +
+                 " in your Python Library, Please install " + ("them" if found_neither else "it") +
                  " to enable emulation")
-
-        return error
+        return "error", error
 
 def server():
 
@@ -197,7 +198,7 @@ def server():
         emu, (addr, code, bits, server_print) = loads(res)
 
         if emu != "emu": break
-        conn.send(dumps(("result", emulate(addr, code, bits))))
+        conn.send(dumps(emulate(addr, code, bits)))
         conn.close()
 
 

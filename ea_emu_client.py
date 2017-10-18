@@ -69,10 +69,11 @@ def send(addr=None, code=None):
             data = s.recv(BUFFER_SIZE)
             if not data: break
             func, args = loads(data)
+
             if func == "result":
                 break
             if func == "error":
-                print "error: " + str(args)
+                ea_warning(args)
                 error = True
                 break
 
@@ -86,10 +87,12 @@ def send(addr=None, code=None):
 
         rip = get_rg("RIP")
 
-        if rip in args:
-            del args[rip]
 
         if not error and annotate:
+
+            if rip in args:
+                del args[rip]
+
             for c, v in args.items():
                 v = [i for i in v if i[0] not in ("rip", "eip")]
                 comment = GetCommentEx(c, 0)
