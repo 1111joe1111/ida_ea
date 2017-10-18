@@ -58,7 +58,7 @@ def send(addr=None, code=None):
         try:
             s.connect((TCP_IP, TCP_PORT))
         except socket.error:
-            Thread(target=system, args=("python \"%sea_emu_server.py\"" % root_dir,)).start()
+            launch_server()
             sleep(0.5)
             s.connect((TCP_IP, TCP_PORT))
 
