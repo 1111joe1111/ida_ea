@@ -285,7 +285,7 @@ def ea_heap():
     global main_arena_addr
     global malloc_addr
 
-    if "ELF" not in idaapi.get_file_type_name():
+    if "ELF" not in get_file_type_name():
         a = QtGui.QWidget()
         form = ELF_Only_UI()
         form.setupUi(a)
