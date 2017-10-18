@@ -8,8 +8,8 @@ from time import time
 from copy import copy
 import sys
 from PySide import QtCore, QtGui
-from ea_UI import Heap_UI, Set_Offset_UI, ELF_Only_UI
-from ea_utils import read, root_dir, config, get_bits, save_config
+from ea_UI import Heap_UI, Set_Offset_UI
+from ea_utils import read, root_dir, config, get_bits, save_config, ea_warning
 
 
 class Hook(DBG_Hooks):
@@ -290,6 +290,9 @@ def ea_heap():
     global malloc_addr
 
     if "ELF" not in get_file_type_name():
+
+        ea_warning("Executable must be ELF fomat (glibc)")
+
         a = QtGui.QWidget()
         form = ELF_Only_UI()
         form.setupUi(a)
@@ -300,12 +303,12 @@ def ea_heap():
             set_config(True)
         else:
             if not is_debugger_on():
-                print "Application must be running for Heap Trace"
+                ea_warning("Application must be running")
             else:
                 base_addr = get_main_arena()
 
                 if not base_addr:
-                    print "Could not find C Library in Segments."
+                    ea_warning("Could not find C Library in Segments")
 
                 else:
                     malloc_addr = base_addr + malloc_offset

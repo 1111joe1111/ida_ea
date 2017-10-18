@@ -4,6 +4,8 @@ from idc import *
 from idautils import *
 from json import load, dump
 from api_funcs import get_rg
+from ea_UI import Warning_UI
+from PySide import QtGui, QtCore
 
 max_iterations = 10
 iterations = 0
@@ -131,7 +133,28 @@ def save_config():
         dump(config, w)
 
 
+def ea_warning(text):
+
+    global warning
+    global form
+    global buttons
+
+    warning = QtGui.QFrame()
+    form = Warning_UI()
+    form.setupUi(warning)
+    form.label.setText(text)
+    form.pushButton.clicked.connect(warning.close)
+    warning.setWindowFlags(warning.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+    warning.show()
+
+
+
+
 root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
+
+warning = None
 
 with open(root_dir + "config.json", "r") as w:
     config = load(w)
+
+
