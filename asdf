@@ -77,28 +77,15 @@ def send(addr=None, code=None):
             bp.flags = flags
             update_bpt(bp)
 
-        rip = get_rg("RIP")
-
-        if rip in args:
-            del args[rip]
-
-        if not error and annotate:
+        if not error:
             for c, v in args.items():
                 v = [i for i in v if i[0] not in ("rip", "eip")]
-                comment = GetCommentEx(c, 0)
-
                 if v:
+                    comment = GetCommentEx(c, 0)
                     annotation = " ".join(a + "=" + hex(b).replace("L", "") for a, b in v)
                     if comment and "e:" in comment:
                         comment = comment[:comment.find("e:")].strip(" ")
                     MakeComm(c, (comment if comment else "").ljust(10) + " e: " + annotation)
-                else:
-
-                    if comment and "e:" in comment:
-                        comment = comment[:comment.find("e:")].strip(" ")
-
-                    MakeComm(c, (comment if comment else "").ljust(10) + " e: " + "No reg changes")
-
 
 
 def ea_emulate():
@@ -106,6 +93,8 @@ def ea_emulate():
     global form
     global a
     global server_running
+
+
 
     if not server_running:
         # Launch emulation server as a seperate process (see top for details why)
@@ -150,8 +139,8 @@ def set_annotate(state):
 
 
 def set_server_print(state):
-    global server_print
-    server_print = True if state else False
+    global annotate
+    annotate = True if state else False
 
 
 

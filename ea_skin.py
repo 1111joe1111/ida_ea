@@ -78,7 +78,6 @@ def apply_initial_skin():
 
 
 def toggle_apply_onstartup(state):
-    print state
     config["apply_skin_on_startup"] = True if state else False
     save_config()
 
@@ -99,7 +98,6 @@ def ea_reskin():
         item = form.comboBox.addItem(i[0])
 
     form.comboBox.activated.connect(changed)
-    print item
 
     buttons = [
         [form.pushButton, form.pushButton_2,     None],

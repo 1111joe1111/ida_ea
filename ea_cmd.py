@@ -3,8 +3,6 @@
 from idaapi import *
 from idc import *
 from idautils import *
-from PySide.QtCore import *
-from PySide.QtGui import *
 from copy import copy
 from PySide import QtCore, QtGui
 from ea_utils import get_mem_recursive, parse_mem, get_bits
@@ -113,7 +111,7 @@ def ea_cmd():
     form.textEdit.setReadOnly(True)
     form.lineEdit.returnPressed.connect(do_cmd)
     form.pushButton.clicked.connect(do_cmd)
-    # a.setWindowFlags(a.windowFlags() | Qt.WindowStaysOnTopHint)
+    # a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
     a.show()
 
 

@@ -77,10 +77,18 @@ def hook_code(uc, address, size, user_data):
 
     new_reg_state = get_state(uc)
 
+    reg_changes = [(i, new_reg_state[i]) for i in new_reg_state if new_reg_state[i] != reg_state[i]]
+
     if last not in annotations:
-        annotations[last] = [(i, new_reg_state[i]) for i in new_reg_state if new_reg_state[i] != reg_state[i]]
+        annotations[last] = reg_changes
 
     reg_state = new_reg_state
+
+    if server_print:
+        if address in instructions:
+            print (str(address) + ": " + " ".join(instructions[address])).ljust(50) + "".join("%s: %s; "%(a,hex(b)) for a, b in reg_changes)
+        elif dbg:
+            print "Unmapped instruction %s" % address
 
     if address == 0:
         uc.emu_stop()
@@ -137,8 +145,9 @@ def emulate(address=False, code=False, _32_bits=True):
         md = Cs(CS_ARCH_X86, CS_MODE_32 if _32_bits else CS_MODE_64)
         instructions = OrderedDict((i.address, (i.mnemonic, i.op_str)) for i in md.disasm(code[address - rounded:], address))
 
-        # print reg_vals
-        # print instructions
+        if dbg:
+            print reg_vals
+            print instructions
 
         uc = Uc(UC_ARCH_X86, UC_MODE_32 if _32_bits else UC_MODE_64)
         uc.mem_map(rounded, 0x1000)
@@ -159,8 +168,9 @@ def emulate(address=False, code=False, _32_bits=True):
         try:
             uc.emu_start(address, address + 200, timeout=1000000)
         except UcError as e:
-            print e
-            # raw_input()
+            if dbg:
+                print e
+                # raw_input()
 
         return annotations
 
@@ -176,7 +186,7 @@ def emulate(address=False, code=False, _32_bits=True):
 def server():
 
     global conn
-
+    global server_print
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((TCP_IP, TCP_PORT))
     s.listen(1)
@@ -184,10 +194,12 @@ def server():
     while True:
         conn, addr = s.accept()
         res = conn.recv(0x5000)
-        emu, (addr, code, bits) = loads(res)
+        emu, (addr, code, bits, server_print) = loads(res)
+
+        print server_print
+
         if emu != "emu": break
         conn.send(dumps(("result", emulate(addr, code, bits))))
-        # print "DONE!"
         conn.close()
 
 
@@ -222,6 +234,9 @@ x64_regs = dict([('rax', UC_X86_REG_RAX), ('rbx', UC_X86_REG_RBX),
 
 reg_total = copy(x64_regs)
 reg_total.update(x86_regs)
+
+dbg = False
+server_print = True
 
 print "Running emulation server..."
 
