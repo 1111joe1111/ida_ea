@@ -46,7 +46,7 @@ def dump():
     df.set_index(pd.DatetimeIndex(df["time"]))
     dump_loc = path + "/" + str(int(time.time())) + ".pickle"
     df.to_pickle(dump_loc)
-    ea_warning("Dumped IDA Trace to: " + dump_loc)
+    ea_warning("Dumped IDA Trace to " + dump_loc)
 
 
 
@@ -98,6 +98,9 @@ def ea_trace():
         form.radioButton_2.click()
         form.pushButton.clicked.connect(select_file)
         form.pushButton_2.clicked.connect(go)
+        form.checkBox.clicked.connect("")
+        form.checkBox_2.clicked.connect()
+
         a.show()
     else:
         ea_warning("Could not find Pandas in your Python distribution. Install it to use this feature")

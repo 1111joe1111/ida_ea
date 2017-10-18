@@ -126,13 +126,8 @@ def emulate(address=False, code=False, _32_bits=True):
         global annotations
 
         annotations = {}
-
-        registers = (("EAX", "EBX", "ECX", "EDX", "EDI", "ESI", "ESP", "EBP", "EIP")
-                     if _32_bits else
-                     ("RAX", "RBX", "RCX", "RDX", "RDI", "RSI", "RSP", "RBP", "RIP",
-                      "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15"))
-
-        reg_vals = {r: get_rg(r) for r in registers}
+        reg_dict = x86_regs if _32_bits else x64_regs
+        reg_vals = {r: get_rg(r.upper()) for r in reg_dict}
 
         if not address:
             address = reg_vals["EIP" if _32_bits else "RIP"]
@@ -153,8 +148,6 @@ def emulate(address=False, code=False, _32_bits=True):
         uc.mem_map(rounded, 0x1000)
         uc.mem_write(rounded, code)
 
-        reg_dict = x86_regs if _32_bits else x64_regs
-
         for name, reg in reg_dict.items():
             if name.upper() in reg_vals:
                 uc.reg_write(reg, reg_vals[name.upper()])
@@ -171,7 +164,6 @@ def emulate(address=False, code=False, _32_bits=True):
         except UcError as e:
             if dbg:
                 print e
-                # raw_input()
 
         print "Finished emulating\n"
 

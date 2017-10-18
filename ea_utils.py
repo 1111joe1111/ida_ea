@@ -81,7 +81,7 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
         elif next((False for i in mem_str if i != "0"), True):
             text = cPrint(b_yellow, "0x" + mem_str)  # + "(NULL)"
         else:
-            text = cPrint(white, "0x" + mem_str)
+            text = "0x" + mem_str
 
         if next((False for i in reversed(mem_str.decode("HEX")) if i not in printable), True) and prev_mem:
             r_mem = dbg_read_memory(prev_mem, 50)
@@ -158,14 +158,6 @@ if codeSegment:
     codeStart = codeSegment.startEA
     codeEnd = codeSegment.endEA
 
-white = 'white'
-red = 'red'
-green = 'green'
-yellow = 'yellow'
-blue = 'blue'
-pink = 'pink'
-lightblue = 'blue'
-grey = 'grey'
 
 b_red = 'red'
 b_green = 'green'

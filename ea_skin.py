@@ -95,7 +95,7 @@ def ea_reskin():
     a.show()
 
     for i in config["skins"]:
-        item = form.comboBox.addItem(i[0])
+        form.comboBox.addItem(i[0])
 
     form.comboBox.activated.connect(changed)
 

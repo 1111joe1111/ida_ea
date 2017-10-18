@@ -322,9 +322,8 @@ def ea_heap():
                     form.listWidget_4.itemClicked.connect(lambda x: select_chunk(x, chunkmap_2))
                     form.pushButton_2.clicked.connect(lambda :set_config(False))
                     form.pushButton.clicked.connect(get_malloc_state)
-
-                    # form.checkBox.stateChanged.connect(lambda x: (
-                    #     add_bp(malloc_addr, 10), hook.hook()) if x else (add_bp(malloc_addr, 2), hook.unhook()))
+                    form.checkBox.stateChanged.connect(lambda x: (
+                        add_bp(malloc_addr, 10), hook.hook()) if x else (add_bp(malloc_addr, 2), hook.unhook()))
                     get_malloc_state()
 
 
