@@ -98,8 +98,6 @@ def ea_trace():
         form.radioButton_2.click()
         form.pushButton.clicked.connect(select_file)
         form.pushButton_2.clicked.connect(go)
-        form.checkBox.clicked.connect("")
-        form.checkBox_2.clicked.connect()
 
         a.show()
     else:
