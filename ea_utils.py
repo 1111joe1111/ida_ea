@@ -6,6 +6,7 @@ from json import load, dump
 from api_funcs import get_rg
 from ea_UI import Warning_UI
 from PySide import QtGui, QtCore
+from os.path import isfile
 
 max_iterations = 10
 iterations = 0
@@ -18,7 +19,7 @@ if codeSegment:
 
 white = 'white'
 red = 'red'
-green ='green'
+green = 'green'
 yellow = 'yellow'
 blue = 'blue'
 pink = 'pink'
@@ -31,7 +32,6 @@ b_yellow = 'yellow'
 b_blue = 'blue'
 b_pink = 'pink'
 b_lightblue = 'blue'
-grey = 'grey'
 
 file_name = None
 _32_bit = None
@@ -42,13 +42,13 @@ def read(file, mode="r"):
         return r.read()
 
 
-def write(string, file, type = "w"):
+def write(string, file, type="w"):
     with open(file, type) as f:
         f.write(string)
 
 
 def cPrint(color, msg):
-    return ("<span class='%s'>" % (color))  + msg + "</span>"
+    return ("<span class='%s'>" % (color)) + msg + "</span>"
 
 
 def get_bits():
@@ -61,9 +61,9 @@ def get_bits():
     if new_name != file_name:
         file_name = new_name
         if get_inf_structure().is_32bit() and get_inf_structure().is_64bit():
-            _32_bit = (next((False for i in ("r8","r9","r10","r11","r12","r13","r14","r15")
+            _32_bit = (next((False for i in ("r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15")
                              if get_rg(i) != 0xffffffffffffffff), True) and
-                       next((False for i in ("rax","rbx","rcx","rdx","rsi","rdi","rbp","rsp","rip")
+                       next((False for i in ("rax", "rbx", "rcx", "rdx", "rsi", "rdi", "rbp", "rsp", "rip")
                              if get_rg(i) > 0xffffffff), True))
         else:
             _32_bit = get_inf_structure().is_32bit()
@@ -75,13 +75,13 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
 
     global iterations
 
-    mem_str = hex(mem)[2:].strip("L").zfill(int_size*2)
+    mem_str = hex(mem)[2:].strip("L").zfill(int_size * 2)
 
     if get_perm:
         try:
             perm = bin(GetSegmentAttr(mem, SEGATTR_PERM))[2:].zfill(3)
             if "1" in perm:
-                perm = '(' + "".join(sym if int(v) else "-" for v,sym in zip(perm,("r", "w", "x"))) + ')'
+                perm = '(' + "".join(sym if int(v) else "-" for v, sym in zip(perm, ("r", "w", "x"))) + ')'
             else:
                 perm = ""
         except:
@@ -101,14 +101,14 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
         if perm or not get_perm:
             text = cPrint(b_lightblue, "0x" + mem_str)
         elif next((False for i in mem_str if i != "0"), True):
-            text = cPrint(b_yellow,  "0x" +mem_str)# + "(NULL)"
+            text = cPrint(b_yellow, "0x" + mem_str)  # + "(NULL)"
         else:
-            text = cPrint(white,  "0x" + mem_str)
+            text = cPrint(white, "0x" + mem_str)
 
         if next((False for i in reversed(mem_str.decode("HEX")) if i not in printable), True) and prev_mem:
             r_mem = dbg_read_memory(prev_mem, 50)
             if r_mem:
-                text += '(' + cPrint(b_green, '"' + r_mem.split("\x00")[0].replace("\n","") + '"') + ')'
+                text += '(' + cPrint(b_green, '"' + r_mem.split("\x00")[0].replace("\n", "") + '"') + ')'
 
         code = False
 
@@ -125,7 +125,7 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
 
 
 def parse_mem(mem):
-    return ("<img src='" + root_dir + "arrow.png'>") .join(mem)
+    return ("<img src='" + root_dir + "arrow.png'>").join(mem)
 
 
 def save_config():
@@ -148,13 +148,35 @@ def ea_warning(text):
     warning.show()
 
 
+def load_config():
+
+    global config
+
+    init_config = {
+        "libc_offsets": [0, 0, 0, 0],
+        "apply_skin_on_startup": True,
+        "current_skin": ["1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff"],
+        "skins": [["Neon Dark", "212121", "ffffff", "414141", "00fff7", "ffffff", "282828", "ffffff", "00ffea", "ffffff"],
+                  ["Neon Blue", "1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff"]]
+    }
+
+    if not isfile(root_dir + "config.json"):
+        config = init_config
+
+    else:
+        with open(root_dir + "config.json", "r") as f:
+            config = load(f)
+
+        for i,v in init_config.items():
+            if i not in config:
+                config[i] = v
+
+    save_config()
 
 
 root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
-
 warning = None
+config = None
 
-with open(root_dir + "config.json", "r") as w:
-    config = load(w)
-
+load_config()
 

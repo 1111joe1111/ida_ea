@@ -85,10 +85,9 @@ def send(addr=None, code=None):
             bp.flags = flags
             update_bpt(bp)
 
-        rip = get_rg("RIP")
-
-
         if not error and annotate:
+
+            rip = get_rg("RIP")
 
             if rip in args:
                 del args[rip]
@@ -170,7 +169,6 @@ def set_annotate(state):
 def set_server_print(state):
     global server_print
     server_print = True if state else False
-
 
 
 TCP_IP = '127.0.0.1';

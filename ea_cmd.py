@@ -56,6 +56,7 @@ def find(arg, int_size):
     form.textEdit.append(string)
     form.textEdit.verticalScrollBar().setValue(form.textEdit.verticalScrollBar().maximum())
 
+
 def do_cmd():
 
     int_size = 4 if get_bits() else 8

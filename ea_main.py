@@ -1,11 +1,11 @@
 from PySide import QtGui
+from ea_utils import config
 from ea_view import ea_view
 from ea_heap import ea_heap
 from ea_emu_client import ea_emulate
 from ea_trace import ea_trace
 from ea_skin import ea_reskin, apply_initial_skin
 from ea_cmd import ea_cmd
-from ea_utils import config
 
 
 if config["apply_skin_on_startup"]:

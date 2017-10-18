@@ -86,7 +86,7 @@ def hook_code(uc, address, size, user_data):
 
     if server_print:
         if address in instructions:
-            print (str(address) + ": " + " ".join(instructions[address])).ljust(50) + "".join("%s: %s; "%(a,hex(b)) for a, b in reg_changes)
+            print (hex(address) + ": " + " ".join(instructions[address])).ljust(50) + "".join("%s: %s; "%(a,hex(b)) for a, b in reg_changes)
         elif dbg:
             print "Unmapped instruction %s" % address
 
@@ -117,8 +117,6 @@ def get_state(uc):
 
 
 def emulate(address=False, code=False, _32_bits=True):
-
-
 
     if found_capstone and found_unicorn:
 
@@ -183,6 +181,7 @@ def emulate(address=False, code=False, _32_bits=True):
                  " in your Python Library, Please install " + ("them" if found_neither else "it") +
                  " to enable emulation")
         return "error", error
+
 
 def server():
 
