@@ -77,6 +77,11 @@ def apply_initial_skin():
         QtGui.qApp.setStyleSheet(QtGui.qApp.styleSheet().split("/*IDA EA START*/")[0] + style)
 
 
+def toggle_apply_onstartup(state):
+    print state
+    config["apply_skin_on_startup"] = True if state else False
+    save_config()
+
 
 def ea_reskin():
 
@@ -115,6 +120,9 @@ def ea_reskin():
     form.pushButton_18.clicked.connect(save_preset)
     form.pushButton_17.clicked.connect(lambda: process_ui_action("SetColors"))
     form.pushButton_20.clicked.connect(apply_skin)
+
+    form.checkBox.stateChanged.connect(lambda x: toggle_apply_onstartup(x))
+
     changed(0)
 
 a = None
