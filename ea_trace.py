@@ -44,7 +44,10 @@ def dump():
     print trace
     df = pd.DataFrame(trace,columns=["time", "name"] + regs)
     df.set_index(pd.DatetimeIndex(df["time"]))
-    df.to_pickle(path + "/" + str(time.time()))
+    dump_loc = path + "/" + str(time.time()) + ".pickle"
+    df.to_pickle(dump_loc)
+    ea_warning(dump_loc)
+
 
 
 def append(ea):
@@ -97,7 +100,7 @@ def ea_trace():
         form.pushButton_2.clicked.connect(go)
         a.show()
     else:
-        ea_warning("Could not find Pandas in your python distribution. Install it to use this feature")
+        ea_warning("Could not find Pandas in your Python distribution. Install it to use this feature")
 
 path = ""
 trace = []

@@ -166,11 +166,14 @@ def emulate(address=False, code=False, _32_bits=True):
         reg_state = get_state(uc)
 
         try:
+            print "Emulating instructions:"
             uc.emu_start(address, address + 200, timeout=1000000)
         except UcError as e:
             if dbg:
                 print e
                 # raw_input()
+
+        print "Finished emulating\n"
 
         return "result", annotations
 
@@ -180,6 +183,7 @@ def emulate(address=False, code=False, _32_bits=True):
                  ("Capstone or Unicorn" if found_neither else "Capstone" if not found_capstone else "Unicorn") +
                  " in your Python Library, Please install " + ("them" if found_neither else "it") +
                  " to enable emulation")
+
         return "error", error
 
 

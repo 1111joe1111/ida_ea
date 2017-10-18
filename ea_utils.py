@@ -8,38 +8,10 @@ from ea_UI import Warning_UI
 from PySide import QtGui, QtCore
 from os.path import isfile
 
-max_iterations = 10
-iterations = 0
-
-codeSegment = get_segm_by_name(".text")
-
-if codeSegment:
-    codeStart = codeSegment.startEA
-    codeEnd = codeSegment.endEA
-
-white = 'white'
-red = 'red'
-green = 'green'
-yellow = 'yellow'
-blue = 'blue'
-pink = 'pink'
-lightblue = 'blue'
-grey = 'grey'
-
-b_red = 'red'
-b_green = 'green'
-b_yellow = 'yellow'
-b_blue = 'blue'
-b_pink = 'pink'
-b_lightblue = 'blue'
-
-file_name = None
-_32_bit = None
-
 
 def read(file, mode="r"):
-    with open(file, mode) as r:
-        return r.read()
+    with open(file, mode) as f:
+        return f.read()
 
 
 def write(string, file, type="w"):
@@ -51,6 +23,10 @@ def cPrint(color, msg):
     return ("<span class='%s'>" % (color)) + msg + "</span>"
 
 
+def parse_mem(mem):
+    return ("<img src='" + root_dir + "arrow.png'>").join(mem)
+
+
 def get_bits():
 
     global file_name
@@ -60,6 +36,8 @@ def get_bits():
 
     if new_name != file_name:
         file_name = new_name
+
+        # avoid IDA bug
         if get_inf_structure().is_32bit() and get_inf_structure().is_64bit():
             _32_bit = (next((False for i in ("r8", "r9", "r10", "r11", "r12", "r13", "r14", "r15")
                              if get_rg(i) != 0xffffffffffffffff), True) and
@@ -124,15 +102,6 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
     iterations = 0
 
 
-def parse_mem(mem):
-    return ("<img src='" + root_dir + "arrow.png'>").join(mem)
-
-
-def save_config():
-    with open(root_dir + "config.json", "w") as w:
-        dump(config, w)
-
-
 def ea_warning(text):
 
     global warning
@@ -146,6 +115,12 @@ def ea_warning(text):
     form.pushButton.clicked.connect(warning.close)
     warning.setWindowFlags(warning.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
     warning.show()
+
+
+def save_config():
+
+    with open(root_dir + "config.json", "w") as w:
+        dump(config, w)
 
 
 def load_config():
@@ -174,6 +149,33 @@ def load_config():
     save_config()
 
 
+max_iterations = 10
+iterations = 0
+
+codeSegment = get_segm_by_name(".text")
+
+if codeSegment:
+    codeStart = codeSegment.startEA
+    codeEnd = codeSegment.endEA
+
+white = 'white'
+red = 'red'
+green = 'green'
+yellow = 'yellow'
+blue = 'blue'
+pink = 'pink'
+lightblue = 'blue'
+grey = 'grey'
+
+b_red = 'red'
+b_green = 'green'
+b_yellow = 'yellow'
+b_blue = 'blue'
+b_pink = 'pink'
+b_lightblue = 'blue'
+
+file_name = None
+_32_bit = None
 root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
 warning = None
 config = None

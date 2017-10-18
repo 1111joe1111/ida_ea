@@ -283,7 +283,6 @@ def ea_heap():
 
     global form
     global a
-    global ELF_only
     global item_no
     global hook
     global main_arena_addr
@@ -291,7 +290,7 @@ def ea_heap():
 
     if "ELF" not in get_file_type_name():
         ea_warning("Executable must be ELF fomat (glibc)")
-        
+
     else:
         if main_arena_offset == 0  and malloc_offset == 0:
             set_config(True)
