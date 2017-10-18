@@ -9,6 +9,7 @@ from ea_utils import get_mem_recursive, parse_mem, get_bits
 from ea_UI import Cmd_UI
 from re import match
 
+
 def get(addr, int_size, n=20):
 
     string = copy(style)
@@ -67,7 +68,9 @@ def do_cmd():
     match_read = match(r"(x\\|x)([0-9]*) *(.*)", cmd)
     match_search = match(r"searchmem *(.*)", cmd)
     match_step = match(r"si", cmd)
-    match_continue = match(r"c|r", cmd)
+    match_continue = match(r"continue|run|c|r", cmd)
+    match_finish = match(r"finish|fini", cmd)
+    match_break = match(r"break|b *(.*)", cmd)
 
 
     if match_read:
@@ -87,6 +90,9 @@ def do_cmd():
     elif match_step:
         step_into()
 
+    elif match_finish:
+        step_until_ret()
+
     elif match_continue:
         continue_process()
 
@@ -105,13 +111,12 @@ def ea_cmd():
     global a
     global form
 
-    a = QFrame()
+    a = QtGui.QFrame()
     form = Cmd_UI()
     form.setupUi(a)
     form.textEdit.setReadOnly(True)
     form.lineEdit.returnPressed.connect(do_cmd)
     form.pushButton.clicked.connect(do_cmd)
-    # a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
     a.show()
 
 
