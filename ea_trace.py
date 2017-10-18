@@ -5,6 +5,7 @@ import time
 from api_funcs import *
 from ea_UI import Trace_UI
 from PySide import QtGui
+from ea_utils import ea_warning
 
 try:
     import pandas as pd
@@ -96,7 +97,7 @@ def ea_trace():
         form.pushButton_2.clicked.connect(go)
         a.show()
     else:
-        print "Could not find Pandas in your python distribution. Install it to use this feature"
+        ea_warning("Could not find Pandas in your python distribution. Install it to use this feature")
 
 path = ""
 trace = []
