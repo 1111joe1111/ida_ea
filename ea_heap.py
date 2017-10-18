@@ -290,14 +290,8 @@ def ea_heap():
     global malloc_addr
 
     if "ELF" not in get_file_type_name():
-
         ea_warning("Executable must be ELF fomat (glibc)")
-
-        a = QtGui.QWidget()
-        form = ELF_Only_UI()
-        form.setupUi(a)
-        a.show()
-        form.pushButton.clicked.connect(a.close)
+        
     else:
         if main_arena_offset == 0  and malloc_offset == 0:
             set_config(True)
