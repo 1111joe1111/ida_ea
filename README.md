@@ -1,6 +1,6 @@
 # IDA EA #
 
-* **A Set of exploitation/reversing aids for IDA** 
+* **A set of exploitation/reversing aids for IDA** 
 
 ## Features ##
 
