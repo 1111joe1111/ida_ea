@@ -4,7 +4,7 @@ from idc import *
 import time
 from api_funcs import *
 from ea_UI import Trace_UI
-from PySide import QtGui
+from PySide import QtGui, QtCore
 from ea_utils import ea_warning
 
 try:
@@ -41,9 +41,13 @@ def dump():
     global hooked
     p_hooks.unhook()
     hooked = False
-    print trace
     df = pd.DataFrame(trace,columns=["time", "name"] + regs)
+
+
     df.set_index(pd.DatetimeIndex(df["time"]))
+
+    print df
+
     dump_loc = path + "/" + str(int(time.time())) + ".pickle"
     df.to_pickle(dump_loc)
     ea_warning("Dumped IDA Trace to " + dump_loc)
@@ -98,7 +102,7 @@ def ea_trace():
         form.radioButton_2.click()
         form.pushButton.clicked.connect(select_file)
         form.pushButton_2.clicked.connect(go)
-
+        a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
         a.show()
     else:
         ea_warning("Could not find Pandas in your Python distribution. Install it to use this feature")
@@ -114,3 +118,5 @@ floating_point = False
 a = None
 form = None
 names = {}
+
+

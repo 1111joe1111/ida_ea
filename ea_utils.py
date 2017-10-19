@@ -158,12 +158,9 @@ if codeSegment:
     codeStart = codeSegment.startEA
     codeEnd = codeSegment.endEA
 
-
 b_red = 'red'
 b_green = 'green'
 b_yellow = 'yellow'
-b_blue = 'blue'
-b_pink = 'pink'
 b_lightblue = 'blue'
 
 file_name = None

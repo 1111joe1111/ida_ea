@@ -38,4 +38,3 @@ pd.options.display.width = 10000
 pd.options.display.max_colwidth = 35
 pd.options.display.max_columns = 10000
 pf.IntArrayFormatter = IntArrayFormatter
-

@@ -6,7 +6,7 @@ from os import system
 from time import sleep
 from api_funcs import *
 from ea_UI import Emulate_UI
-from PySide import QtGui
+from PySide import QtGui, QtCore
 from ea_utils import get_bits, root_dir, ea_warning
 
 # Importing Unicorn Emulator directly into the IDAPython environment causes instability in IDA (random crashes ect.)
@@ -137,11 +137,14 @@ def ea_emulate():
     if hooked:
         form.checkBox.click()
 
+
     form.checkBox.stateChanged.connect(toggle_hooking)
     form.pushButton.clicked.connect(a.close)
     form.pushButton_2.clicked.connect(send)
     form.checkBox_3.stateChanged.connect(set_annotate)
     form.checkBox_2.stateChanged.connect(set_server_print)
+    a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+
 
     a.show()
 
