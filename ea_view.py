@@ -42,7 +42,7 @@ def anchor_scrollbar():
 
     global scroll
 
-    while running:
+    while view_open and IDA_running:
         if not scroll:
             sleep(0.005)
         else:
@@ -50,6 +50,9 @@ def anchor_scrollbar():
                 form.listWidget.verticalScrollBar().setValue(form.listWidget.verticalScrollBar().maximum())
                 sleep(0.005)
             scroll = False
+
+    if not IDA_running:
+        a.close()
 
 
 def deref_mem():
@@ -103,8 +106,8 @@ def select_item(item):
 
 
 def close(event):
-    global running
-    running = False
+    global view_open
+    view_open = False
     h.unhook()
 
 
@@ -160,14 +163,11 @@ def ea_view():
     form.setupUi(a)
     form.textEdit.setReadOnly(True)
     form.textEdit_2.setReadOnly(True)
-
     form.listWidget.itemClicked.connect(select_item)
     form.listWidget.itemClicked.connect(select_item)
-
     form.pushButton.clicked.connect(dump_state)
     form.pushButton_2.clicked.connect(clear)
     form.pushButton_3.clicked.connect(rewind)
-
     form.textEdit.setLineWrapMode(form.textEdit.NoWrap)
     form.textEdit_2.setLineWrapMode(form.textEdit.NoWrap)
 
@@ -197,7 +197,7 @@ style = (
 states = []
 h = None
 scroll = False
-running = True
+view_open = True
 form = False
 a = False
 

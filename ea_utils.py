@@ -7,7 +7,8 @@ from api_funcs import get_rg
 from ea_UI import Warning_UI
 from PySide import QtGui, QtCore
 from os.path import isfile
-
+from time import time, sleep
+from threading import Thread
 
 def read(file, mode="r"):
     with open(file, mode) as f:
@@ -168,6 +169,7 @@ _32_bit = None
 root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
 warning = None
 config = None
+IDA_running = True
 
 load_config()
 

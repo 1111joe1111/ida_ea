@@ -2,6 +2,7 @@ import pandas as pd
 from pickle import load
 import pandas.io.formats.format as pf
 
+
 class IntArrayFormatter(pf.GenericArrayFormatter):
     def _format_strings(self):
         fmt_values = [
@@ -30,7 +31,6 @@ def load_df(path):
         df["name"] = df["name"].str.ljust(50)
         df = df.set_index(pd.DatetimeIndex(df["time"] * 1000000000).time)
         del df["time"]
-
         return df
 
 pd.options.display.max_rows = 200

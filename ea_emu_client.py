@@ -8,6 +8,7 @@ from api_funcs import *
 from ea_UI import Emulate_UI
 from PySide import QtGui, QtCore
 from ea_utils import get_bits, root_dir, ea_warning
+from subprocess import Popen
 
 # Importing Unicorn Emulator directly into the IDAPython environment causes instability in IDA (random crashes ect.)
 # As a result, Unicorn emulator is decoupled from IDA and runs as a seperate process communicating with IDA using a local socket (port 28745)
@@ -112,14 +113,10 @@ def send(addr=None, code=None):
 def launch_server():
 
     # Launch emulation server as a seperate process (see top for details why)
-    # Python subprocess module is broken in IDA so the os.system function is used instead
-    # (This requires a new Thread because the os.system function blocks by default)
-
     global server_running
+    Popen("python \"%sea_emu_server.py\"" % root_dir)
 
-    Thread(target=system, args=("python \"%sea_emu_server.py\"" % root_dir,)).start()
     server_running = True
-
 
 
 def ea_emulate():
@@ -137,15 +134,12 @@ def ea_emulate():
     if hooked:
         form.checkBox.click()
 
-
     form.checkBox.stateChanged.connect(toggle_hooking)
     form.pushButton.clicked.connect(a.close)
     form.pushButton_2.clicked.connect(send)
     form.checkBox_3.stateChanged.connect(set_annotate)
     form.checkBox_2.stateChanged.connect(set_server_print)
     a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
-
-
     a.show()
 
 

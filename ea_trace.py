@@ -5,7 +5,6 @@ import time
 from api_funcs import *
 from ea_UI import Trace_UI
 from PySide import QtGui, QtCore
-from ea_utils import ea_warning
 
 try:
     import pandas as pd

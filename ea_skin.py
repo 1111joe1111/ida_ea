@@ -2,7 +2,7 @@ from PySide import QtGui
 from ea_UI import Reskin_UI, Name_UI
 from idaapi import *
 from ea_utils import save_config, config, root_dir
-
+from threading import Thread
 
 def color_selected(i, color):
     back = "{:04x}".format(color.rgb())[2:]
@@ -91,7 +91,6 @@ def ea_reskin():
     a = QtGui.QFrame()
     form = Reskin_UI()
     form.setupUi(a)
-
     a.show()
 
     for i in config["skins"]:
@@ -118,7 +117,6 @@ def ea_reskin():
     form.pushButton_18.clicked.connect(save_preset)
     form.pushButton_17.clicked.connect(lambda: process_ui_action("SetColors"))
     form.pushButton_20.clicked.connect(apply_skin)
-
     form.checkBox.stateChanged.connect(lambda x: toggle_apply_onstartup(x))
 
     changed(0)
