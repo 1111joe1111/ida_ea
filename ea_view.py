@@ -42,7 +42,7 @@ def anchor_scrollbar():
 
     global scroll
 
-    while view_open and IDA_running:
+    while view_open:
         if not scroll:
             sleep(0.005)
         else:
@@ -50,9 +50,6 @@ def anchor_scrollbar():
                 form.listWidget.verticalScrollBar().setValue(form.listWidget.verticalScrollBar().maximum())
                 sleep(0.005)
             scroll = False
-
-    if not IDA_running:
-        a.close()
 
 
 def deref_mem():

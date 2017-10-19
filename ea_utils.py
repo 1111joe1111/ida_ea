@@ -169,7 +169,6 @@ _32_bit = None
 root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
 warning = None
 config = None
-IDA_running = True
 
 load_config()
 

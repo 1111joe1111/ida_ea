@@ -184,7 +184,15 @@ def server():
     global conn
     global server_print
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind((TCP_IP, TCP_PORT))
+
+    try:
+        s.bind((TCP_IP, TCP_PORT))
+    except socket.error as e:
+        if e.args[0].reason.errno == 10048:
+            print "Error: Port %s is in use, another instance of the server may already be running" % TCP_PORT
+        else:
+            raise
+
     s.listen(1)
 
     while True:
