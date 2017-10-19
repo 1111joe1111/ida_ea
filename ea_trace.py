@@ -5,6 +5,7 @@ import time
 from api_funcs import *
 from ea_UI import Trace_UI
 from PySide import QtGui, QtCore
+from ea_utils import ea_warning
 
 try:
     import pandas as pd
@@ -41,12 +42,7 @@ def dump():
     p_hooks.unhook()
     hooked = False
     df = pd.DataFrame(trace,columns=["time", "name"] + regs)
-
-
     df.set_index(pd.DatetimeIndex(df["time"]))
-
-    print df
-
     dump_loc = path + "/" + str(int(time.time())) + ".pickle"
     df.to_pickle(dump_loc)
     ea_warning("Dumped IDA Trace to " + dump_loc)
