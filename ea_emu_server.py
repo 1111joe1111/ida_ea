@@ -6,6 +6,7 @@ import socket
 from pickle import dumps, loads
 from traceback import format_tb
 import sys
+from time import sleep
 
 try:
     from unicorn import *
@@ -192,8 +193,17 @@ def server():
     except socket.error as e:
         error = True
         if e.args[0] == 10048:
-            print "Error: Port %s is in use, another instance of the server may already be running" % TCP_PORT
-            raw_input()
+
+            # Check if server already running
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s.connect((TCP_IP, TCP_PORT))
+            s.send(dumps(("ping",(0,0,0,0))))
+            if s.recv(0x10) == "pong":
+                print "An instance of the server is already running. This window will close in 2 seconds"
+                sleep(2)
+            else:
+                print "Error: Port %s is in use" % TCP_PORT
+                raw_input()
         else:
             raise
 
@@ -204,12 +214,19 @@ def server():
         while True:
             conn, addr = s.accept()
             res = conn.recv(0x5000)
-            emu, (addr, code, bits, server_print) = loads(res)
+            cmd, (addr, code, bits, server_print) = loads(res)
 
-            if emu != "emu": break
-            conn.send(dumps(emulate(addr, code, bits)))
-            conn.close()
-
+            if cmd == "ping":
+                conn.send("pong")
+                conn.close()
+            elif cmd == "quit":
+                conn.close()
+                break
+            elif cmd == "emu":
+                conn.send(dumps(emulate(addr, code, bits)))
+                conn.close()
+            else:
+                print "Unrecognized cmd: " + cmd
 
 sys.excepthook = debug
 TCP_IP = '127.0.0.1'

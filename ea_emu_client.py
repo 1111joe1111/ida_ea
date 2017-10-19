@@ -104,10 +104,8 @@ def send(addr=None, code=None):
                         comment = comment[:comment.find("e:")].strip(" ")
                     MakeComm(c, (comment if comment else "").ljust(10) + " e: " + annotation)
                 else:
-
                     if comment and "e:" in comment:
                         comment = comment[:comment.find("e:")].strip(" ")
-
                     MakeComm(c, (comment if comment else "").ljust(10) + " e: " + "No reg changes")
 
 
@@ -118,6 +116,16 @@ def launch_server():
     Popen("python \"%sea_emu_server.py\"" % root_dir)
 
     server_running = True
+
+def close_server(arg):
+
+    global server_running
+
+    server_running = False
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((TCP_IP, TCP_PORT))
+    s.send(dumps(("quit", (0, 0, 0, 0))))
 
 
 def ea_emulate():
@@ -141,7 +149,10 @@ def ea_emulate():
     form.checkBox_3.stateChanged.connect(set_annotate)
     form.checkBox_2.stateChanged.connect(set_server_print)
     # a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+    a.closeEvent = close_server
     a.show()
+
+
 
 
 def toggle_hooking(state):
