@@ -130,6 +130,8 @@ def emulate(address=False, code=False, _32_bits=True):
         reg_dict = x86_regs if _32_bits else x64_regs
         reg_vals = {r: get_rg(r.upper()) for r in reg_dict}
 
+        print reg_vals
+
         if not address:
             address = reg_vals["EIP" if _32_bits else "RIP"]
         if not code:
@@ -150,14 +152,16 @@ def emulate(address=False, code=False, _32_bits=True):
         uc.mem_write(rounded, code)
 
         for name, reg in reg_dict.items():
-            if name.upper() in reg_vals:
-                uc.reg_write(reg, reg_vals[name.upper()])
+            if name in reg_vals:
+                uc.reg_write(reg, reg_vals[name])
 
         uc.reg_write(reg_dict["eip" if _32_bits else "rip"], address)
         uc.hook_add(UC_HOOK_CODE, hook_code)
         uc.hook_add(UC_HOOK_MEM_READ_UNMAPPED | UC_HOOK_MEM_WRITE_UNMAPPED | UC_HOOK_MEM_FETCH_UNMAPPED, hook_err)
 
         reg_state = get_state(uc)
+
+        print reg_state
 
         try:
             print "Emulating instructions:"
