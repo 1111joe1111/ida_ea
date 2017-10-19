@@ -185,24 +185,30 @@ def server():
     global server_print
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+    error = False
+
     try:
         s.bind((TCP_IP, TCP_PORT))
     except socket.error as e:
-        if e.args[0].reason.errno == 10048:
+        error = True
+        if e.args[0] == 10048:
             print "Error: Port %s is in use, another instance of the server may already be running" % TCP_PORT
+            raw_input()
         else:
             raise
 
-    s.listen(1)
+    if not error:
 
-    while True:
-        conn, addr = s.accept()
-        res = conn.recv(0x5000)
-        emu, (addr, code, bits, server_print) = loads(res)
+        s.listen(1)
 
-        if emu != "emu": break
-        conn.send(dumps(emulate(addr, code, bits)))
-        conn.close()
+        while True:
+            conn, addr = s.accept()
+            res = conn.recv(0x5000)
+            emu, (addr, code, bits, server_print) = loads(res)
+
+            if emu != "emu": break
+            conn.send(dumps(emulate(addr, code, bits)))
+            conn.close()
 
 
 sys.excepthook = debug

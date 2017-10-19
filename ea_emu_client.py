@@ -43,16 +43,21 @@ def send(addr=None, code=None):
 
     else:
         if not addr:
+
+            flags = None
             addr = get_rg("RIP")
+            bp = get_bp(addr,False)
+
+            if bp:
+                flags = bp.flags
+                bp.flags = 2
+                update_bpt(bp)
+
             code = dbg_read_memory(addr & 0xfffffffffffff000, 0x1000)
 
-        flags = None
-        bp = bpt_t()
-
-        if get_bpt(addr,bp):
-            flags = bp.flags
-            bp.flags = 2
-            update_bpt(bp)
+            if flags:
+                bp.flags = flags
+                update_bpt(bp)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -81,10 +86,6 @@ def send(addr=None, code=None):
             s.send(dumps(globals()[func](*args)))
 
         s.close()
-
-        if flags:
-            bp.flags = flags
-            update_bpt(bp)
 
         if not error and annotate:
 
@@ -178,6 +179,7 @@ h = None
 hooked = False
 form = None
 a = None
+bp = None
 server_running = False
 annotate = True
 server_print = True
