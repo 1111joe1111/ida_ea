@@ -140,7 +140,7 @@ def ea_emulate():
     form.pushButton_2.clicked.connect(send)
     form.checkBox_3.stateChanged.connect(set_annotate)
     form.checkBox_2.stateChanged.connect(set_server_print)
-    a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+    # a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
     a.show()
 
 

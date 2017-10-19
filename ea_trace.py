@@ -97,7 +97,7 @@ def ea_trace():
         form.radioButton_2.click()
         form.pushButton.clicked.connect(select_file)
         form.pushButton_2.clicked.connect(go)
-        a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+        # a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
         a.show()
     else:
         ea_warning("Could not find Pandas in your Python distribution. Install it to use this feature")

@@ -38,18 +38,19 @@ class Hook(DBG_Hooks):
         return 0
 
 
-def anchor_scrollbar():
+class AnchorScrollbar(QtCore.QThread):
 
-    global scroll
+    def run(self):
+        global scroll
 
-    while view_open:
-        if not scroll:
-            sleep(0.005)
-        else:
-            for x in range(100):
-                form.listWidget.verticalScrollBar().setValue(form.listWidget.verticalScrollBar().maximum())
+        while view_open:
+            if not scroll:
                 sleep(0.005)
-            scroll = False
+            else:
+                for x in range(100):
+                    form.listWidget.verticalScrollBar().setValue(form.listWidget.verticalScrollBar().maximum())
+                    sleep(0.005)
+                scroll = False
 
 
 def deref_mem():
@@ -154,7 +155,7 @@ def ea_view():
     global h
     global form
     global a
-
+    global anchor_scrollbarr
     a = QtGui.QFrame()
     form = View_UI()
     form.setupUi(a)
@@ -171,7 +172,9 @@ def ea_view():
     a.closeEvent = close
     a.show()
 
-    Thread(target=anchor_scrollbar).start()
+    anchor_scrollbarr = AnchorScrollbar()
+    anchor_scrollbarr.start()
+
     h = Hook(send)
     h.hook()
 
@@ -197,4 +200,4 @@ scroll = False
 view_open = True
 form = False
 a = False
-
+anchor_scrollbarr = False
