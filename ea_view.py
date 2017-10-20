@@ -110,7 +110,7 @@ def send():
     results = deref_mem()
     states.append(results)
     format_mem(results)
-    form.listWidget.setSelection(len(states))
+    # form.listWidget.setSelection(len(states))
 
 
 def echo(num):

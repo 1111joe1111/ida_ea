@@ -5,6 +5,7 @@ from idautils import *
 if IDA_SDK_VERSION < 690:
     try:
         from PySide import QtGui, QtCore
+        # asoasdf
     except:
         print "IDA EA Error: Couldn't Find PySide Bindings, Trying PyQt"
         from PyQt4 import QtGui, QtCore
