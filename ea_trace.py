@@ -4,8 +4,9 @@ from idc import *
 import time
 from api_funcs import *
 from ea_UI import Trace_UI
-from PySide import QtGui, QtCore
-from ea_utils import ea_warning
+from PySide import QtGui
+from ea_utils import ea_warning, save_config, config, root_dir
+from subprocess import Popen
 
 try:
     import pandas as pd
@@ -43,11 +44,16 @@ def dump():
     hooked = False
     df = pd.DataFrame(trace,columns=["time", "name"] + regs)
     df.set_index(pd.DatetimeIndex(df["time"]))
-    dump_loc = path + "/" + str(int(time.time())) + ".pickle"
+    dump_loc = config["trace_dir"] + ("/" if "/" in config["trace_dir"] else "\\") + str(int(time.time())) + ".pickle"
     df.to_pickle(dump_loc)
-    ea_warning("Dumped IDA Trace to " + dump_loc)
+    ea_warning("Dumped IDA Trace to " + dump_loc,
+               (("Open Folder", lambda: Popen("explorer " + config["trace_dir"], shell=True)),
+                ("Open In Console", lambda: p(dump_loc))),
+               "EA Trace")
 
 
+def p(dump_loc):
+    Popen('python "%s" "%s"' % (root_dir + "ea_read_t.py", dump_loc))
 
 def append(ea):
     if ea not in names:
@@ -55,13 +61,12 @@ def append(ea):
     trace.append([time.time(), names[ea]] + [get_rg(reg) for reg in regs])
 
 
-def select_file():
+def select_dir():
 
-    global path
-
-    path = QtGui.QFileDialog.getExistingDirectory()
+    config["trace_dir"] = QtGui.QFileDialog.getExistingDirectory()
+    save_config()
     form.lineEdit.clear()
-    form.lineEdit.insert(path)
+    form.lineEdit.insert(config["trace_dir"])
 
 
 def go():
@@ -95,14 +100,15 @@ def ea_trace():
         form.setupUi(a)
         form.checkBox.click()
         form.radioButton_2.click()
-        form.pushButton.clicked.connect(select_file)
+        form.pushButton.clicked.connect(select_dir)
         form.pushButton_2.clicked.connect(go)
+        if config["trace_dir"]:
+            form.lineEdit.insert(config["trace_dir"])
         # a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
         a.show()
     else:
         ea_warning("Could not find Pandas in your Python distribution. Install it to use this feature")
 
-path = ""
 trace = []
 hooked = False
 p_hooks = None
