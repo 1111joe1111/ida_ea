@@ -6,8 +6,7 @@ from os import system
 from time import sleep
 from api_funcs import *
 from ea_UI import Emulate_UI
-from PySide import QtGui, QtCore
-from ea_utils import get_bits, root_dir, ea_warning
+from ea_utils import QtGui, QtCore, get_bits, root_dir, ea_warning
 from subprocess import Popen
 from os import name
 

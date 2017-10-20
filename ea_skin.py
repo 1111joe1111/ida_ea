@@ -1,7 +1,6 @@
-from PySide import QtGui
 from ea_UI import Reskin_UI, Name_UI
 from idaapi import *
-from ea_utils import save_config, config, root_dir
+from ea_utils import QtGui, save_config, config, root_dir
 from threading import Thread
 
 def color_selected(i, color):

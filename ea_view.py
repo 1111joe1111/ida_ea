@@ -2,14 +2,13 @@
 from idaapi import *
 from idc import *
 from idautils import *
-from PySide import QtGui, QtCore
 from copy import copy
 from time import sleep
 from threading import Thread
 from pickle import dump
 from api_funcs import *
 from ea_UI import View_UI
-from ea_utils import get_mem_recursive, get_bits, parse_mem, cPrint, a_sync, config, save_config
+from ea_utils import QtGui, QtCore, get_mem_recursive, get_bits, parse_mem, cPrint, a_sync, config, save_config
 
 
 class Hook(DBG_Hooks):
@@ -111,6 +110,7 @@ def send():
     results = deref_mem()
     states.append(results)
     format_mem(results)
+    form.listWidget.setSelection(len(states))
 
 
 def echo(num):

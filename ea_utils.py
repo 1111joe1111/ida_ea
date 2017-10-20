@@ -1,15 +1,26 @@
-from string import printable
 from idaapi import *
 from idc import *
 from idautils import *
+
+if IDA_SDK_VERSION < 690:
+    try:
+        from PySide import QtGui, QtCore
+    except:
+        print "IDA EA Error: Couldn't Find PySide Bindings, Trying PyQt"
+        from PyQt4 import QtGui, QtCore
+else:
+    from PyQt5 import QtGui, QtCore
+
+from string import printable
 from json import load, dump
 from api_funcs import get_rg
 from ea_UI import Warning_UI
-from PySide import QtGui, QtCore
+from idaapi import IDA_SDK_VERSION
 from os.path import isfile
 from os import remove
 from time import time, sleep
 from threading import Thread
+
 
 def read(file, mode="r"):
     with open(file, mode) as f:

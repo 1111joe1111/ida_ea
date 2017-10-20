@@ -1,4 +1,4 @@
-from PySide import QtCore, QtGui
+from ea_utils import QtCore, QtGui
 
 
 class Warning_UI(object):

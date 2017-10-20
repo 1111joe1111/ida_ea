@@ -7,9 +7,8 @@ from re import findall
 from time import time
 from copy import copy
 import sys
-from PySide import QtCore, QtGui
 from ea_UI import Heap_UI, Set_Offset_UI
-from ea_utils import read, root_dir, config, get_bits, save_config, ea_warning
+from ea_utils import  QtCore, QtGui, read, root_dir, config, get_bits, save_config, ea_warning
 
 
 class Hook(DBG_Hooks):

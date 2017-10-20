@@ -4,8 +4,7 @@ from idc import *
 import time
 from api_funcs import *
 from ea_UI import Trace_UI
-from PySide import QtGui
-from ea_utils import ea_warning, save_config, config, root_dir
+from ea_utils import QtGui, ea_warning, save_config, config, root_dir
 from subprocess import Popen
 
 try:

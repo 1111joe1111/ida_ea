@@ -5,8 +5,7 @@ from idc import *
 from idautils import *
 from api_funcs import *
 from copy import copy
-from PySide import QtCore, QtGui
-from ea_utils import get_mem_recursive, parse_mem, get_bits, ea_warning, a_sync
+from ea_utils import QtCore, QtGui, get_mem_recursive, parse_mem, get_bits, ea_warning, a_sync
 from ea_UI import Cmd_UI
 from re import match
 from time import sleep, time

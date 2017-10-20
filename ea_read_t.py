@@ -40,13 +40,11 @@ pf.IntArrayFormatter = IntArrayFormatter
 
 if __name__ == "__main__":
 
-
     df = load_df(argv[1])
     print
     print df
     print
     print "dataframe name: df"
-    print "dataframe length: %s" % len(df)
     print "dataframe columns: %s" % list(df.columns)
     print
     print "current settings:"
