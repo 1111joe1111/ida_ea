@@ -64,7 +64,7 @@ def deref_mem():
     for i in range(0, config["stack_display_length"]):
         regions = []
         get_mem_recursive(cpu.rsp + (i*int_size), regions, int_size=int_size)
-        results[1].append((i, regions))
+        results[1].append((i*int_size, regions))
 
     return results
 
@@ -73,20 +73,20 @@ def format_mem(results, append=True):
 
     global scroll
 
+    regs, stack = results
+
     string = copy(style)
     string += "<div>"
-    string += "".join((i + "&nbsp;"*(4-len(i)) + parse_mem(mem) + "\n") + "<br>" for i, mem in results[0])
+    string += "".join((i + "&nbsp;"*(4-len(i)) + parse_mem(mem) + "\n") + "<br>" for i, mem in regs)
     string = string[:-4]
     string += "</div>"
-
     form.textEdit.clear()
     form.textEdit.insertHtml(string)
 
     string = copy(style)
     string += "<div>"
-    string += "".join((cPrint("red", "RSP+%s&nbsp;" %  "{:03x}".format(i)) + parse_mem(mem)) + "<br>" for i, mem in results[1])
+    string += "".join((cPrint("red", "RSP+%s&nbsp;" %  "{:03x}".format(i)) + parse_mem(mem)) + "<br>" for i, mem in stack)
     string += "</div>"
-
     form.textEdit_2.clear()
     form.textEdit_2.insertHtml(string)
     offset = GetFuncOffset(cpu.rip)
