@@ -40,6 +40,7 @@ class Hook(DBG_Hooks):
 
 def dump():
     global hooked
+    global trace
     p_hooks.unhook()
     hooked = False
     df = pd.DataFrame(trace,columns=["time", "name"] + regs)
@@ -48,12 +49,11 @@ def dump():
     df.to_pickle(dump_loc)
     ea_warning("Dumped IDA Trace to " + dump_loc,
                (("Open Folder", lambda: Popen("explorer " + config["trace_dir"], shell=True)),
-                ("Open In Console", lambda: p(dump_loc))),
+                ("Open In Console", lambda: Popen('python "%s" "%s"' % (root_dir + "ea_read_t.py", dump_loc)))),
                "EA Trace")
 
+    trace = []
 
-def p(dump_loc):
-    Popen('python "%s" "%s"' % (root_dir + "ea_read_t.py", dump_loc))
 
 def append(ea):
     if ea not in names:

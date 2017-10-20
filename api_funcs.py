@@ -27,9 +27,6 @@ def set_trace(start, end):
 
 
 def runDebugger(file, args=None):
-
-    print file
-
     if not args:
         StartDebugger(file,file, file[:max(file.rfind("/"), file.rfind("\\"))])
     else:
@@ -71,8 +68,6 @@ def disas(start,end):
 
 
 def find_ins(ins, i, limit=1000):
-
-    rd = ""
 
     for x in range(limit):
         i += ItemSize(i)
