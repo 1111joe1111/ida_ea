@@ -1,3 +1,4 @@
 
 *.pyc
+*.ui_out
 config.json
