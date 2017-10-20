@@ -103,6 +103,7 @@ def select_item(item):
 def close(event):
     global view_open
     view_open = False
+    clear()
     h.unhook()
 
 
