@@ -29,7 +29,7 @@ class Warning_UI(object):
 class View_UI(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(1075, 694)
+        Form.resize(1210, 694)
         Form.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.gridLayout = QtGui.QGridLayout(Form)
         self.gridLayout.setObjectName("gridLayout")

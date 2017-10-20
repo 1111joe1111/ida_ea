@@ -5,7 +5,6 @@ from idautils import *
 if IDA_SDK_VERSION < 690:
     try:
         from PySide import QtGui, QtCore
-        # asoasdf
     except:
         print "IDA EA Error: Couldn't Find PySide Bindings, Trying PyQt"
         from PyQt4 import QtGui, QtCore
@@ -16,7 +15,6 @@ from string import printable
 from json import load, dump
 from api_funcs import get_rg
 from ea_UI import Warning_UI
-from idaapi import IDA_SDK_VERSION
 from os.path import isfile
 from os import remove
 from time import time, sleep
@@ -170,6 +168,7 @@ def load_config():
             print 'IDA EA Error: Config File ("config.json") contained invalid JSON. Reinitializing config...'
             remove(root_dir + "config.json")
             load_config()
+            return
 
         for i,v in init_config.items():
             if i not in config:
