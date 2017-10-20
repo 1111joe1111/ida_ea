@@ -3,9 +3,6 @@ from idc import *
 from idautils import *
 from threading import Thread
 
-def async(target):
-    Thread(target=target).start()
-
 
 def add_bp(addr, flags=9, type=4, size=0):
     add_bpt(addr,size,type)
@@ -30,10 +27,13 @@ def set_trace(start, end):
 
 
 def runDebugger(file, args=None):
+
+    print file
+
     if not args:
-        StartDebugger(file,file, file[file.rfind("/")])
+        StartDebugger(file,file, file[:max(file.rfind("/"), file.rfind("\\"))])
     else:
-        StartDebugger(file," ".join([file] + args), file[file.rfind("/")])
+        StartDebugger(file," ".join([file] + args), file[:max(file.rfind("/"), file.rfind("\\"))])
 
 
 def get_rg(reg):

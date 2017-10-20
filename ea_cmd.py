@@ -6,10 +6,11 @@ from idautils import *
 from api_funcs import *
 from copy import copy
 from PySide import QtCore, QtGui
-from ea_utils import get_mem_recursive, parse_mem, get_bits
+from ea_utils import get_mem_recursive, parse_mem, get_bits, ea_warning, a_sync
 from ea_UI import Cmd_UI
 from re import match
-
+from time import sleep, time
+from threading import Thread
 
 def get(addr, int_size, n=20):
 
@@ -65,8 +66,9 @@ def do_cmd():
 
     match_read = match(r"(x\\|x)([0-9]*) *(.*)", cmd)
     match_search = match(r"searchmem *(.*)", cmd)
-    match_step = match(r"si", cmd)
-    match_continue = match(r"continue|run|c|r", cmd)
+    match_step = match(r"step|si", cmd)
+    match_continue = match(r"continue|c", cmd)
+    match_run = match(r"run|r", cmd)
     match_finish = match(r"finish|fini", cmd)
     match_break = match(r"(break|b) *(.*)", cmd)
     match_delete = match(r"(delete|delet|del) *(.*)", cmd)
@@ -100,6 +102,29 @@ def do_cmd():
 
     elif match_delete:
         del_bpt(to_int(match_delete.group(2)))
+
+    elif match_run:
+        if get_process_state() != 0:
+            StopDebugger()
+            # TODO: find way to asynchronously restart debugger without crashing IDA
+            # a_sync(restart)
+        else:
+            ProcessUiAction("ProcessStart")
+
+
+def restart():
+
+    start = time()
+    timeout = False
+
+    while get_process_state() != 0:
+        sleep(0.5)
+        if start - time() > 4:
+            timeout = True
+            ea_warning("Restart operation timed out")
+            break
+
+    runDebugger(get_input_file_path())
 
 
 def to_int(i):

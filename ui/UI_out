@@ -1,56 +1,35 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file './emulate.ui'
+# Form implementation generated from reading ui file './warning2.ui'
 #
-# Created: Wed Oct 18 17:26:23 2017
+# Created: Thu Oct 19 08:58:15 2017
 #      by: pyside-uic 0.2.15 running on PySide 1.2.4
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
 
-class Ui_Form(object):
-    def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(376, 87)
-        self.verticalLayout = QtGui.QVBoxLayout(Form)
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(328, 62)
+        Dialog.setWindowTitle("")
+        self.verticalLayout = QtGui.QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName("verticalLayout")
-        self.label = QtGui.QLabel(Form)
+        self.label = QtGui.QLabel(Dialog)
+        self.label.setText("")
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.checkBox_3 = QtGui.QCheckBox(Form)
-        self.checkBox_3.setChecked(True)
-        self.checkBox_3.setObjectName("checkBox_3")
-        self.horizontalLayout.addWidget(self.checkBox_3)
-        self.checkBox_2 = QtGui.QCheckBox(Form)
-        self.checkBox_2.setChecked(True)
-        self.checkBox_2.setObjectName("checkBox_2")
-        self.horizontalLayout.addWidget(self.checkBox_2)
-        self.checkBox = QtGui.QCheckBox(Form)
-        self.checkBox.setObjectName("checkBox")
-        self.horizontalLayout.addWidget(self.checkBox)
-        self.verticalLayout.addLayout(self.horizontalLayout)
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-        self.pushButton = QtGui.QPushButton(Form)
+        self.pushButton = QtGui.QPushButton(Dialog)
         self.pushButton.setObjectName("pushButton")
-        self.horizontalLayout_2.addWidget(self.pushButton)
-        self.pushButton_2 = QtGui.QPushButton(Form)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.horizontalLayout_2.addWidget(self.pushButton_2)
-        self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.horizontalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addLayout(self.horizontalLayout)
 
-        self.retranslateUi(Form)
-        QtCore.QMetaObject.connectSlotsByName(Form)
+        self.retranslateUi(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Form):
-        Form.setWindowTitle(QtGui.QApplication.translate("Form", "EA Trace", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("Form", "Options:", None, QtGui.QApplication.UnicodeUTF8))
-        self.checkBox_3.setText(QtGui.QApplication.translate("Form", "Annotate In IDA", None, QtGui.QApplication.UnicodeUTF8))
-        self.checkBox_2.setText(QtGui.QApplication.translate("Form", "Print In Server Window", None, QtGui.QApplication.UnicodeUTF8))
-        self.checkBox.setText(QtGui.QApplication.translate("Form", "Emulate On Break", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton.setText(QtGui.QApplication.translate("Form", "Done", None, QtGui.QApplication.UnicodeUTF8))
-        self.pushButton_2.setText(QtGui.QApplication.translate("Form", "Emulate!", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, Dialog):
+        self.pushButton.setText(QtGui.QApplication.translate("Dialog", "OK", None, QtGui.QApplication.UnicodeUTF8))
 

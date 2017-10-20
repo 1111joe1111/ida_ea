@@ -103,7 +103,7 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
     iterations = 0
 
 
-def ea_warning(text):
+def ea_warning(text, additional_buttons=[], title="EA Warning"):
 
     global warning
     global form
@@ -114,7 +114,15 @@ def ea_warning(text):
     form.setupUi(warning)
     form.label.setText(text)
     form.pushButton.clicked.connect(warning.close)
+
+    for button, handler in additional_buttons:
+        setattr(form, button, QtGui.QPushButton(warning))
+        getattr(form, button).clicked.connect(handler)
+        getattr(form, button).setText(QtGui.QApplication.translate("Dialog", button, None, QtGui.QApplication.UnicodeUTF8))
+        form.horizontalLayout.addWidget(getattr(form, button))
+
     warning.setWindowFlags(warning.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
+    warning.setWindowTitle(QtGui.QApplication.translate("Dialog", title, None, QtGui.QApplication.UnicodeUTF8))
     warning.show()
 
 
@@ -130,6 +138,7 @@ def load_config():
 
     init_config = {
         "libc_offsets": [0, 0, 0, 0],
+        "trace_dir": 0,
         "apply_skin_on_startup": True,
         "current_skin": ["1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff"],
         "skins": [["Neon Dark", "212121", "ffffff", "414141", "00fff7", "ffffff", "282828", "ffffff", "00ffea", "ffffff"],
@@ -148,6 +157,25 @@ def load_config():
                 config[i] = v
 
     save_config()
+
+
+
+def a_sync(func, ThreadClass=QtCore.QThread):
+
+    # if reference to QThread is not global,
+    # python's garbage collection cleans up QThread whilst running causing a crash in IDA
+    # to prevent this we have an array of global thread references which expands as nessecary
+
+    thread_idx = next((i for i, v in enumerate(threads) if not v.isRunning()), False)
+    thread = ThreadClass()
+
+    if thread_idx is not False:
+        threads[thread_idx] = thread
+    else:
+        threads.append(thread)
+
+    thread.run = func
+    thread.start()
 
 
 max_iterations = 10
@@ -171,4 +199,6 @@ warning = None
 config = None
 
 load_config()
+
+threads = []
 

@@ -4,7 +4,7 @@ from idc import *
 from idautils import *
 from PySide import QtGui, QtCore
 from copy import copy
-from ea_utils import get_mem_recursive, get_bits, parse_mem, cPrint
+from ea_utils import get_mem_recursive, get_bits, parse_mem, cPrint, a_sync
 from time import sleep
 from threading import Thread
 from ea_UI import View_UI
@@ -22,7 +22,6 @@ class Hook(DBG_Hooks):
 
         if get_bp(ea) == 9:
             self.send()
-
         return 0
 
     def dbg_step_into(self):
@@ -38,19 +37,18 @@ class Hook(DBG_Hooks):
         return 0
 
 
-class AnchorScrollbar(QtCore.QThread):
+def anchor_scrollbar():
 
-    def run(self):
-        global scroll
+    global scroll
 
-        while view_open:
-            if not scroll:
+    while view_open:
+        if not scroll:
+            sleep(0.005)
+        else:
+            for x in range(100):
+                form.listWidget.verticalScrollBar().setValue(form.listWidget.verticalScrollBar().maximum())
                 sleep(0.005)
-            else:
-                for x in range(100):
-                    form.listWidget.verticalScrollBar().setValue(form.listWidget.verticalScrollBar().maximum())
-                    sleep(0.005)
-                scroll = False
+            scroll = False
 
 
 def deref_mem():
@@ -59,7 +57,7 @@ def deref_mem():
 
     int_size = 4 if get_bits() else 8
 
-    for i, reg in [(i, getattr(cpu, i.strip(" "))) for i in registers]:
+    for i, reg in [(i, getattr(cpu, i)) for i in registers]:
         regions = []
         get_mem_recursive(reg, regions, int_size=int_size)
         results[0].append((i, regions))
@@ -155,7 +153,7 @@ def ea_view():
     global h
     global form
     global a
-    global anchor_scrollbarr
+
     a = QtGui.QFrame()
     form = View_UI()
     form.setupUi(a)
@@ -172,8 +170,7 @@ def ea_view():
     a.closeEvent = close
     a.show()
 
-    anchor_scrollbarr = AnchorScrollbar()
-    anchor_scrollbarr.start()
+    a_sync(anchor_scrollbar)
 
     h = Hook(send)
     h.hook()
