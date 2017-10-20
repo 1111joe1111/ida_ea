@@ -7,6 +7,7 @@ from api_funcs import get_rg
 from ea_UI import Warning_UI
 from PySide import QtGui, QtCore
 from os.path import isfile
+from os import remove
 from time import time, sleep
 from threading import Thread
 
@@ -139,6 +140,7 @@ def load_config():
     init_config = {
         "libc_offsets": [0, 0, 0, 0],
         "trace_dir": 0,
+        "stack_display_length": 25,
         "apply_skin_on_startup": True,
         "current_skin": ["1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff"],
         "skins": [["Neon Dark", "212121", "ffffff", "414141", "00fff7", "ffffff", "282828", "ffffff", "00ffea", "ffffff"],
@@ -149,8 +151,13 @@ def load_config():
         config = init_config
 
     else:
-        with open(root_dir + "config.json", "r") as f:
-            config = load(f)
+        try:
+            with open(root_dir + "config.json", "r") as f:
+                config = load(f)
+        except:
+            print 'IDA EA Error: Config File ("config.json") contained invalid JSON. Reinitializing config...'
+            remove(root_dir + "config.json")
+            load_config()
 
         for i,v in init_config.items():
             if i not in config:
