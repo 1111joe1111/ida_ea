@@ -4,12 +4,12 @@ from idc import *
 from idautils import *
 from PySide import QtGui, QtCore
 from copy import copy
-from ea_utils import get_mem_recursive, get_bits, parse_mem, cPrint, a_sync
 from time import sleep
 from threading import Thread
-from ea_UI import View_UI
-from api_funcs import *
 from pickle import dump
+from api_funcs import *
+from ea_UI import View_UI
+from ea_utils import get_mem_recursive, get_bits, parse_mem, cPrint, a_sync, config, save_config
 
 
 class Hook(DBG_Hooks):
@@ -19,7 +19,6 @@ class Hook(DBG_Hooks):
         self.send = send
 
     def dbg_bpt(self, tid, ea):
-
         if get_bp(ea) == 9:
             self.send()
         return 0
@@ -62,9 +61,9 @@ def deref_mem():
         get_mem_recursive(reg, regions, int_size=int_size)
         results[0].append((i, regions))
 
-    for i in range(0,100,4):
+    for i in range(0, config["stack_display_length"]):
         regions = []
-        get_mem_recursive(cpu.rsp + i, regions, int_size=int_size)
+        get_mem_recursive(cpu.rsp + (i*int_size), regions, int_size=int_size)
         results[1].append((i, regions))
 
     return results
@@ -148,6 +147,12 @@ def rewind():
     dbg_write_memory(rsp, stack_mem)
 
 
+def change_stack_length(x):
+    print x
+    config["stack_display_length"] = x
+    save_config()
+
+
 def ea_view():
 
     global h
@@ -166,7 +171,8 @@ def ea_view():
     form.pushButton_3.clicked.connect(rewind)
     form.textEdit.setLineWrapMode(form.textEdit.NoWrap)
     form.textEdit_2.setLineWrapMode(form.textEdit.NoWrap)
-
+    form.spinBox.valueChanged.connect(lambda x: change_stack_length(x))
+    form.spinBox.setValue(config["stack_display_length"])
     a.closeEvent = close
     a.show()
 
