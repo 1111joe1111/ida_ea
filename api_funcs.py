@@ -1,13 +1,12 @@
 from idaapi import *
 from idc import *
 from idautils import *
-from threading import Thread
 
 
 def add_bp(addr, flags=9, type=4, size=0):
     add_bpt(addr,size,type)
     bp = bpt_t()
-    get_bpt(addr,bp)
+    get_bpt(addr, bp)
     bp.flags = flags
     bp.type = type
     bp.size = size
@@ -67,16 +66,16 @@ def disas(start,end):
     return result
 
 
-def find_ins(ins, i, limit=1000):
+def find_ins(ins, addr, limit=1000):
 
     for x in range(limit):
-        i += ItemSize(i)
-        if ins in GetDisasm(i):
+        addr += ItemSize(addr)
+        if ins in GetDisasm(addr):
             break
     else:
-        i = 0
+        addr = 0
 
-    return i
+    return addr
 
 
 def brk_write(start, end, name="brk_read"):
