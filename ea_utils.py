@@ -9,6 +9,7 @@ if IDA_SDK_VERSION < 690:
         print "IDA EA Error: Couldn't Find PySide Bindings, Trying PyQt"
         from PyQt4 import QtGui, QtCore
 else:
+    print "Warning: IDA EA untested with IDA <=6.9"
     from PyQt5 import QtGui, QtCore
 
 from string import printable
