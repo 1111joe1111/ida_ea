@@ -1,8 +1,8 @@
 from pysideuic import compileUi
 
 
-with open(r"./warning2.ui", "r") as r:
-    with open("UI_out", "w") as w:
+with open(r"./traceDump.ui", "r") as r:
+    with open("out.ui_out", "w") as w:
         compileUi(r, w)
 
 quit()

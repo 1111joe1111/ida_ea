@@ -1,4 +1,3 @@
-# from shell import send_cmd
 from idaapi import *
 from idc import *
 import time
@@ -48,10 +47,14 @@ def dump():
     df.to_pickle(dump_loc)
     ea_warning("Dumped IDA Trace to " + dump_loc,
                (("Open Folder", lambda: Popen("explorer " + config["trace_dir"], shell=True)),
-                ("Open In Console", lambda: Popen('python "%s" "%s"' % (root_dir + "ea_read_t.py", dump_loc)))),
+                ("Open In Console", lambda: open_in_console(dump_loc))),
                "EA Trace")
 
     trace = []
+
+
+def open_in_console(dump_loc):
+    Popen('python "%s" "%s"' % (root_dir + "ea_read_t.py", dump_loc))
 
 
 def append(ea):
@@ -66,6 +69,13 @@ def select_dir():
     save_config()
     form.lineEdit.clear()
     form.lineEdit.insert(config["trace_dir"])
+
+
+def select_dump():
+    open_in_console(
+        QtGui.QFileDialog.getOpenFileName(QtGui.QFileDialog(),
+                                          'Open Dump', '',
+                                          'pickle (*.pickle)')[0])
 
 
 def go():
@@ -101,6 +111,7 @@ def ea_trace():
         form.radioButton_2.click()
         form.pushButton.clicked.connect(select_dir)
         form.pushButton_2.clicked.connect(go)
+        form.pushButton_4.clicked.connect(select_dump)
         if config["trace_dir"]:
             form.lineEdit.insert(config["trace_dir"])
         # a.setWindowFlags(a.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
