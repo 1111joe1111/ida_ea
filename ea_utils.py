@@ -1,6 +1,6 @@
 from idaapi import *
-from idc import *
 from idautils import *
+from idc import *
 
 if IDA_SDK_VERSION < 690:
     try:
@@ -10,16 +10,16 @@ if IDA_SDK_VERSION < 690:
         from PyQt4 import QtGui, QtCore
 else:
     print "Warning: IDA EA untested with IDA >=6.9"
-    from PyQt5 import QtGui, QtCore
+    from PyQt5 import QtGui, QtCore, QtWidgets
 
-from string import printable
-from json import load, dump
 from api_funcs import get_rg
 from ea_UI import Warning_UI
-from os.path import isfile
+from json import dump, load
 from os import remove
-from time import time, sleep
+from os.path import isfile
+from string import printable
 from threading import Thread
+from time import sleep, time
 
 
 def read(file, mode="r"):
@@ -121,20 +121,20 @@ def ea_warning(text, additional_buttons=[], title="EA Warning"):
     global form
     global buttons
 
-    warning = QtGui.QFrame()
+    warning = QtWidgets.QFrame()
     form = Warning_UI()
     form.setupUi(warning)
     form.label.setText(text)
     form.pushButton.clicked.connect(warning.close)
 
     for button, handler in additional_buttons:
-        setattr(form, button, QtGui.QPushButton(warning))
+        setattr(form, button, QtWidgets.QPushButton(warning))
         getattr(form, button).clicked.connect(handler)
-        getattr(form, button).setText(QtGui.QApplication.translate("Dialog", button, None, QtGui.QApplication.UnicodeUTF8))
+        getattr(form, button).setText(QtWidgets.QApplication.translate("Dialog", button, None))
         form.horizontalLayout.addWidget(getattr(form, button))
 
     warning.setWindowFlags(warning.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
-    warning.setWindowTitle(QtGui.QApplication.translate("Dialog", title, None, QtGui.QApplication.UnicodeUTF8))
+    warning.setWindowTitle(QtWidgets.QApplication.translate("Dialog", title, None))
     warning.show()
 
 

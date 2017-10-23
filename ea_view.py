@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-from idaapi import *
-from idc import *
-from idautils import *
-from copy import copy
-from time import sleep
-from threading import Thread
-from pickle import dump
 from api_funcs import *
+from cPickle import dump
+from copy import copy
 from ea_UI import View_UI
-from ea_utils import QtGui, QtCore, get_mem_recursive, get_bits, parse_mem, cPrint, a_sync, config, save_config
+from ea_utils import QtWidgets, a_sync, cPrint, config, get_bits, get_mem_recursive, parse_mem, save_config
+from idaapi import *
+from idautils import *
+from idc import *
+from time import sleep
 
 
 class Hook(DBG_Hooks):
@@ -159,7 +158,7 @@ def ea_view():
     global form
     global a
 
-    a = QtGui.QFrame()
+    a = QtWidgets.QFrame()
     form = View_UI()
     form.setupUi(a)
     form.textEdit.setReadOnly(True)

@@ -1,6 +1,7 @@
 import pandas as pd
-from pickle import load
 import pandas.io.formats.format as pf
+
+from cPickle import load
 from code import interact
 from sys import argv
 

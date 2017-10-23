@@ -1,14 +1,13 @@
-from idaapi import *
 import socket
-from pickle import loads, dumps
-from threading import Thread
-from os import system
-from time import sleep
+
 from api_funcs import *
+from cPickle import dumps, loads
 from ea_UI import Emulate_UI
-from ea_utils import QtGui, QtCore, get_bits, root_dir, ea_warning
-from subprocess import Popen
+from ea_utils import QtWidgets, ea_warning, get_bits, root_dir
+from idaapi import *
 from os import name
+from subprocess import Popen
+from time import sleep
 
 # Importing Unicorn Emulator directly into the IDAPython environment causes instability in IDA (random crashes ect.)
 # As a result, Unicorn emulator is decoupled from IDA and runs as a seperate process communicating with IDA using a local socket (port 28745)
@@ -137,7 +136,7 @@ def ea_emulate():
     if not server_running:
         launch_server()
 
-    a = QtGui.QFrame()
+    a = QtWidgets.QFrame()
     form = Emulate_UI()
     form.setupUi(a)
     if hooked:

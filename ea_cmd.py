@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
-from idaapi import *
-from idc import *
-from idautils import *
 from api_funcs import *
 from copy import copy
-from ea_utils import QtCore, QtGui, get_mem_recursive, parse_mem, get_bits, ea_warning, a_sync
 from ea_UI import Cmd_UI
+from ea_utils import QtWidgets, ea_warning, get_bits, get_mem_recursive, parse_mem
+from idaapi import *
+from idautils import *
+from idc import *
 from re import match
 from time import sleep, time
-from threading import Thread
+
 
 def get(addr, int_size, n=20):
 
@@ -139,7 +139,7 @@ def ea_cmd():
     global a
     global form
 
-    a = QtGui.QFrame()
+    a = QtWidgets.QFrame()
     form = Cmd_UI()
     form.setupUi(a)
     form.textEdit.setReadOnly(True)
