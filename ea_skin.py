@@ -67,8 +67,6 @@ def apply_initial_skin():
         with open(root_dir + "style_template.css", "r") as r:
             style = r.read()
 
-        print config["current_skin"]
-
         for i, c in enumerate(item for item in config["current_skin"]):
             style = style.replace("{%s}" % (i), "#" + c)
 
