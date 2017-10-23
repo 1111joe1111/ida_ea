@@ -111,9 +111,6 @@ def send():
     format_mem(results)
     form.listWidget.setCurrentRow(len(states) - 1)
 
-def echo(num):
-    print num
-
 
 def clear():
     form.listWidget.clear()
@@ -132,7 +129,6 @@ def rewind():
     for i, v in regs:
         v = v[0][v[0].find(">0x") + 3:]
         v = int(v[:v.find("<")],16)
-        print i, v
         set_rg(i,v)
 
     rsp = get_rg("RSP")
@@ -147,7 +143,6 @@ def rewind():
 
 
 def change_stack_length(x):
-    print x
     config["stack_display_length"] = x
     save_config()
 
@@ -157,6 +152,23 @@ def ea_view():
     global h
     global form
     global a
+    global style
+
+
+    style = (
+        ("<style> "
+         r"div{") +
+        (r"color:white;background-color:#212121;" if config["current_skin"][0] not in ("1c1c2a", "212121") else "")
+        +
+        (
+            "font-family:Hack;font-size:14px}\n"
+            ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}\n"
+            ".blue{color:'#00FFFF'}"
+            ".red{}"
+            ".green{color:'#C4F0C5'}"
+            ".yellow{color:'#737DFF'}"
+            "</style>")
+    )
 
     a = QtWidgets.QFrame()
     form = View_UI()
@@ -184,20 +196,7 @@ def ea_view():
 registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
              "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15")
 
-style = (
-    ("<style> "
-     r"div{") +
-    (r"color:white;background-color:#282828;" if config["current_skin"][5] not in ("202030", "282828") else "")
-    +
-    (
-        "font-family:Hack;font-size:14px}\n"
-        ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}\n"
-        ".blue{color:'#00FFFF'}"
-        ".red{}"
-        ".green{color:'#C4F0C5'}"
-        ".yellow{color:'#737DFF'}"
-        "</style>")
-)
+style = ""
 
 states = []
 h = None
@@ -206,6 +205,3 @@ view_open = True
 form = False
 a = False
 anchor_scrollbarr = False
-
-
-"202030"
