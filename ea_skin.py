@@ -1,7 +1,7 @@
-from ea_UI import Reskin_UI, Name_UI
+from ea_UI import QtGui, QtWidgets, Name_UI, Reskin_UI
+from ea_utils import config, root_dir, save_config
 from idaapi import *
-from ea_utils import QtGui, save_config, config, root_dir
-from threading import Thread
+
 
 def color_selected(i, color):
     back = "{:04x}".format(color.rgb())[2:]
@@ -12,7 +12,7 @@ def color_selected(i, color):
 def select_color(i):
 
     global color
-    color = QtGui.QColorDialog()
+    color = QtWidgets.QColorDialog()
     color.setCustomColor(0, 0x212121)
     color.setCurrentColor(QtGui.QColor.fromRgb(int(buttons[i][0].styleSheet().split("#")[1], 16)))
     color.colorSelected.connect(lambda color: color_selected(i, color))
@@ -22,7 +22,7 @@ def select_color(i):
 def save_preset():
 
     global name_ui
-    name_ui = QtGui.QFrame()
+    name_ui = QtWidgets.QFrame()
     form_2 = Name_UI()
     form_2.setupUi(name_ui)
     name_ui.show()
@@ -34,9 +34,7 @@ def save_preset_2(form_2, name_ui):
     name = form_2.lineEdit.text()
     form.comboBox.addItem(name)
     config["skins"].append([name] + [item[2] for item in buttons])
-
     save_config()
-
     form.comboBox.setCurrentIndex(len(config["skins"] )- 1)
     name_ui.close()
 
@@ -59,7 +57,7 @@ def apply_skin():
     config["current_skin"] = [item[2] for item in buttons]
     save_config()
 
-    QtGui.qApp.setStyleSheet(QtGui.qApp.styleSheet().split("/*IDA EA START*/")[0] + style)
+    QtWidgets.qApp.setStyleSheet(QtWidgets.qApp.styleSheet().split("/*IDA EA START*/")[0] + style)
 
 
 
@@ -73,7 +71,7 @@ def apply_initial_skin():
         for i, c in enumerate(item for item in config["current_skin"]):
             style = style.replace("{%s}" % (i), "#" + c)
 
-        QtGui.qApp.setStyleSheet(QtGui.qApp.styleSheet().split("/*IDA EA START*/")[0] + style)
+        QtWidgets.qApp.setStyleSheet(QtWidgets.qApp.styleSheet().split("/*IDA EA START*/")[0] + style)
 
 
 def toggle_apply_onstartup(state):
@@ -87,7 +85,7 @@ def ea_reskin():
     global form
     global buttons
 
-    a = QtGui.QFrame()
+    a = QtWidgets.QFrame()
     form = Reskin_UI()
     form.setupUi(a)
     a.show()

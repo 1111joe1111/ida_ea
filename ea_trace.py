@@ -1,9 +1,10 @@
+import time
+
+from api_funcs import *
+from ea_UI import Trace_UI, QtWidgets
+from ea_utils import config, ea_warning, root_dir, save_config
 from idaapi import *
 from idc import *
-import time
-from api_funcs import *
-from ea_UI import Trace_UI
-from ea_utils import QtGui, ea_warning, save_config, config, root_dir
 from subprocess import Popen
 
 try:
@@ -65,7 +66,7 @@ def append(ea):
 
 def select_dir():
 
-    config["trace_dir"] = QtGui.QFileDialog.getExistingDirectory()
+    config["trace_dir"] = QtWidgets.QFileDialog.getExistingDirectory()
     save_config()
     form.lineEdit.clear()
     form.lineEdit.insert(config["trace_dir"])
@@ -73,7 +74,7 @@ def select_dir():
 
 def select_dump():
     open_in_console(
-        QtGui.QFileDialog.getOpenFileName(QtGui.QFileDialog(),
+        QtWidgets.QFileDialog.getOpenFileName(QtWidgets.QFileDialog(),
                                           'Open Dump', '',
                                           'pickle (*.pickle)')[0])
 
@@ -104,7 +105,7 @@ def ea_trace():
     global form
 
     if found_lib:
-        a = QtGui.QFrame()
+        a = QtWidgets.QFrame()
         form = Trace_UI()
         form.setupUi(a)
         form.checkBox.click()

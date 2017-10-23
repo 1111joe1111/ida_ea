@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
-from idaapi import *
-from idc import *
-from idautils import *
-from copy import copy
-from time import sleep
-from threading import Thread
-from pickle import dump
 from api_funcs import *
+from cPickle import dump
+from copy import copy
 from ea_UI import View_UI
-from ea_utils import QtGui, QtCore, get_mem_recursive, get_bits, parse_mem, cPrint, a_sync, config, save_config
+from ea_utils import QtWidgets, a_sync, cPrint, config, get_bits, get_mem_recursive, parse_mem, save_config
+from idaapi import *
+from idautils import *
+from idc import *
+from time import sleep
 
 
 class Hook(DBG_Hooks):
@@ -159,7 +158,7 @@ def ea_view():
     global form
     global a
 
-    a = QtGui.QFrame()
+    a = QtWidgets.QFrame()
     form = View_UI()
     form.setupUi(a)
     form.textEdit.setReadOnly(True)
@@ -186,15 +185,18 @@ registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
              "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15")
 
 style = (
-    "<style> span{}\n "
-    r"div{"
-    "font-family:Hack;font-size:14px}\n"
-    ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}\n"
-    ".blue{color:'#00FFFF'}"
-    ".red{}"
-    ".green{color:'#C4F0C5'}"
-    ".yellow{color:'#737DFF'}"
-    "</style>"
+    ("<style> "
+     r"div{") +
+    (r"color:white;background-color:#282828;" if config["current_skin"][5] not in ("202030", "282828") else "")
+    +
+    (
+        "font-family:Hack;font-size:14px}\n"
+        ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}\n"
+        ".blue{color:'#00FFFF'}"
+        ".red{}"
+        ".green{color:'#C4F0C5'}"
+        ".yellow{color:'#737DFF'}"
+        "</style>")
 )
 
 states = []
@@ -204,3 +206,6 @@ view_open = True
 form = False
 a = False
 anchor_scrollbarr = False
+
+
+"202030"

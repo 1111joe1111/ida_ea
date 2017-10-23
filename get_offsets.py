@@ -1,7 +1,7 @@
-from subprocess import Popen, PIPE, call, check_output
-from time import sleep
 from re import search
+from subprocess import PIPE, Popen, call, check_output
 from sys import maxsize
+from time import sleep
 
 # make temp c programme to find c library offsets
 with open("/tmp/tmp_offsets.c", "w") as w:

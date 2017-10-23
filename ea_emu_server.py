@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
+import socket
+import sys
+
+from cPickle import dumps, loads
 from collections import OrderedDict
 from copy import copy
-import socket
-from pickle import dumps, loads
-from traceback import format_tb
-import sys
 from time import sleep
+from traceback import format_tb
 
 try:
     from unicorn import *

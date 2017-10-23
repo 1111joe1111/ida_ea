@@ -1,15 +1,10 @@
+from api_funcs import *
+from ea_UI import Heap_UI, Set_Offset_UI
+from ea_utils import QtCore, QtWidgets, config, ea_warning, get_bits, read, root_dir, save_config
 from idaapi import *
 from idautils import *
 from idc import *
-from api_funcs import *
-from collections import namedtuple
 from re import findall
-from time import time
-from copy import copy
-import sys
-from ea_UI import Heap_UI, Set_Offset_UI
-from ea_utils import  QtCore, QtGui, read, root_dir, config, get_bits, save_config, ea_warning
-
 
 class Hook(DBG_Hooks):
 
@@ -248,7 +243,7 @@ def set_config(restart):
 
     global b
 
-    b = QtGui.QWidget()
+    b = QtWidgets.QWidget()
     form = Set_Offset_UI()
     form.setupUi(b)
     b.show()
@@ -306,7 +301,7 @@ def ea_heap():
                     malloc_addr = find_ins("ret", base_addr + malloc_offset)
                     main_arena_addr = base_addr + main_arena_offset
 
-                    a = QtGui.QWidget()
+                    a = QtWidgets.QWidget()
                     form = Heap_UI()
                     form.setupUi(a)
                     form.textEdit.setReadOnly(True)

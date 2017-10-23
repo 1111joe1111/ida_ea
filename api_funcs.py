@@ -1,6 +1,6 @@
 from idaapi import *
-from idc import *
 from idautils import *
+from idc import *
 
 
 def add_bp(addr, flags=9, type=4, size=0):
