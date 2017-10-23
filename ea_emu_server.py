@@ -228,6 +228,7 @@ def server():
                 conn.close()
             else:
                 print "Unrecognized cmd: " + cmd
+                conn.close()
 
 sys.excepthook = debug
 TCP_IP = '127.0.0.1'
