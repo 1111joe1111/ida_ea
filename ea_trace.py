@@ -1,8 +1,8 @@
 import time
 
 from api_funcs import *
-from ea_UI import Trace_UI
-from ea_utils import QtWidgets, config, ea_warning, root_dir, save_config
+from ea_UI import Trace_UI, QtWidgets
+from ea_utils import config, ea_warning, root_dir, save_config
 from idaapi import *
 from idc import *
 from subprocess import Popen

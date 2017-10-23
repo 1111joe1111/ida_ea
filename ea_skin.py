@@ -1,7 +1,7 @@
-from ea_UI import Name_UI, Reskin_UI
-from ea_utils import QtGui, QtWidgets, config, root_dir, save_config
+from ea_UI import QtGui, QtWidgets, Name_UI, Reskin_UI
+from ea_utils import config, root_dir, save_config
 from idaapi import *
-from threading import Thread
+
 
 def color_selected(i, color):
     back = "{:04x}".format(color.rgb())[2:]

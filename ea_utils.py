@@ -1,19 +1,8 @@
 from idaapi import *
 from idautils import *
 from idc import *
-
-if IDA_SDK_VERSION < 690:
-    try:
-        from PySide import QtGui, QtCore
-    except:
-        print "IDA EA Error: Couldn't Find PySide Bindings, Trying PyQt"
-        from PyQt4 import QtGui, QtCore
-else:
-    print "Warning: IDA EA untested with IDA >=6.9"
-    from PyQt5 import QtGui, QtCore, QtWidgets
-
 from api_funcs import get_rg
-from ea_UI import Warning_UI
+from ea_UI import QtCore, QtWidgets, Warning_UI
 from json import dump, load
 from os import remove
 from os.path import isfile

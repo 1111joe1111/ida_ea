@@ -1,4 +1,15 @@
-from ea_utils import QtCore, QtWidgets
+from idaapi import IDA_SDK_VERSION
+
+if IDA_SDK_VERSION < 690:
+    try:
+        # Hack to maintain backward compatibility with 6.8
+        from PySide import QtGui as QtWidgets, QtGui, QtCore
+    except:
+        print "IDA EA Error: Couldn't Find PySide Bindings, Trying PyQt"
+        from PyQt4 import QtGui as QtWidgets, QtGui, QtCore
+else:
+    print "Warning: IDA EA untested with IDA >=6.9"
+    from PyQt5 import QtGui, QtCore, QtWidgets
 
 
 class Warning_UI(object):
@@ -789,71 +800,6 @@ class Trace_UI(object):
         self.radioButton.setText(QtWidgets.QApplication.translate("Form", "Breakpoint Hit", None))
         self.pushButton_2.setText(QtWidgets.QApplication.translate("Form", "Go!", None))
 
-
-
-#
-#
-# class Trace_UI(object):
-#     def setupUi(self, Form):
-#         Form.setObjectName("Form")
-#         Form.resize(394, 179)
-#         self.verticalLayout = QtWidgets.QVBoxLayout(Form)
-#         self.verticalLayout.setObjectName("verticalLayout")
-#         self.label_3 = QtWidgets.QLabel(Form)
-#         self.label_3.setObjectName("label_3")
-#         self.verticalLayout.addWidget(self.label_3)
-#         self.horizontalLayout = QtWidgets.QHBoxLayout()
-#         self.horizontalLayout.setObjectName("horizontalLayout")
-#         self.lineEdit = QtWidgets.QLineEdit(Form)
-#         self.lineEdit.setObjectName("lineEdit")
-#         self.horizontalLayout.addWidget(self.lineEdit)
-#         self.pushButton = QtWidgets.QPushButton(Form)
-#         self.pushButton.setObjectName("pushButton")
-#         self.horizontalLayout.addWidget(self.pushButton)
-#         self.verticalLayout.addLayout(self.horizontalLayout)
-#         self.label_2 = QtWidgets.QLabel(Form)
-#         self.label_2.setObjectName("label_2")
-#         self.verticalLayout.addWidget(self.label_2)
-#         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
-#         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
-#         self.checkBox = QtWidgets.QCheckBox(Form)
-#         self.checkBox.setObjectName("checkBox")
-#         self.horizontalLayout_2.addWidget(self.checkBox)
-#         self.checkBox_2 = QtWidgets.QCheckBox(Form)
-#         self.checkBox_2.setObjectName("checkBox_2")
-#         self.horizontalLayout_2.addWidget(self.checkBox_2)
-#         self.verticalLayout.addLayout(self.horizontalLayout_2)
-#         self.label = QtWidgets.QLabel(Form)
-#         self.label.setObjectName("label")
-#         self.verticalLayout.addWidget(self.label)
-#         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
-#         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-#         self.radioButton_2 = QtWidgets.QRadioButton(Form)
-#         self.radioButton_2.setObjectName("radioButton_2")
-#         self.horizontalLayout_3.addWidget(self.radioButton_2)
-#         self.radioButton = QtWidgets.QRadioButton(Form)
-#         self.radioButton.setObjectName("radioButton")
-#         self.horizontalLayout_3.addWidget(self.radioButton)
-#         self.verticalLayout.addLayout(self.horizontalLayout_3)
-#         self.pushButton_2 = QtWidgets.QPushButton(Form)
-#         self.pushButton_2.setObjectName("pushButton_2")
-#         self.verticalLayout.addWidget(self.pushButton_2)
-#
-#         self.retranslateUi(Form)
-#         QtCore.QMetaObject.connectSlotsByName(Form)
-#
-#     def retranslateUi(self, Form):
-#         Form.setWindowTitle(QtWidgets.QApplication.translate("Form", "EA Trace", None))
-#         self.label_3.setText(QtWidgets.QApplication.translate("Form", "Dump Location:", None))
-#         self.pushButton.setText(QtWidgets.QApplication.translate("Form", "Select", None))
-#         self.label_2.setText(QtWidgets.QApplication.translate("Form", "Include Regs:", None))
-#         self.checkBox.setText(QtWidgets.QApplication.translate("Form", "General", None))
-#         self.checkBox_2.setText(QtWidgets.QApplication.translate("Form", "Floating Point", None))
-#         self.label.setText(QtWidgets.QApplication.translate("Form", "Dump On:", None))
-#         self.radioButton_2.setText(QtWidgets.QApplication.translate("Form", "Exit", None))
-#         self.radioButton.setText(QtWidgets.QApplication.translate("Form", "Breakpoint Hit", None))
-#         self.pushButton_2.setText(QtWidgets.QApplication.translate("Form", "Go!", None))
-#
 
 class Emulate_UI(object):
     def setupUi(self, Form):
