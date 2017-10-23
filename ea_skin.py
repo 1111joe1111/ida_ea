@@ -34,9 +34,7 @@ def save_preset_2(form_2, name_ui):
     name = form_2.lineEdit.text()
     form.comboBox.addItem(name)
     config["skins"].append([name] + [item[2] for item in buttons])
-
     save_config()
-
     form.comboBox.setCurrentIndex(len(config["skins"] )- 1)
     name_ui.close()
 
