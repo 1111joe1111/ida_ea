@@ -2,6 +2,7 @@ import time
 from api_funcs import *
 from ea_UI import Trace_UI, QtWidgets
 from ea_utils import config, ea_warning, root_dir, save_config
+from os.path import isdir
 from idaapi import *
 from idc import *
 from subprocess import Popen
@@ -79,6 +80,10 @@ def select_dump():
 
 
 def go():
+
+    if not isdir(config["trace_dir"]):
+        ea_warning("You must select a valid dump directory")
+        return
 
     global p_hooks
     global general
