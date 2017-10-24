@@ -74,7 +74,7 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
     if codeSegment and codeStart < mem < codeEnd:
         offset = GetFuncOffset(mem)
         if offset:
-            text = cPrint("code", "0x" + mem_str) + cPrint(b_red, " &lt;" + offset + "&gt;")
+            text = cPrint("code", "0x" + mem_str) + cPrint("code", " &lt;" + offset + "&gt;")
             code = True
 
     if not offset:
@@ -232,11 +232,6 @@ codeSegment = get_segm_by_name(".text")
 if codeSegment:
     codeStart = codeSegment.startEA
     codeEnd = codeSegment.endEA
-
-b_red = 'red'
-b_green = 'green'
-b_yellow = 'yellow'
-b_lightblue = 'blue'
 
 file_name = None
 _32_bit = None

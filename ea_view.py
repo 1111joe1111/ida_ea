@@ -54,9 +54,6 @@ def deref_mem():
     int_size = 4 if get_bits() else 8
 
     for i, reg in [(i, getattr(cpu, i)) for i in registers]:
-
-        print i, hex(reg)
-
         regions = []
         get_mem_recursive(reg, regions, int_size=int_size)
         results[0].append((i, regions))
@@ -127,7 +124,6 @@ def dump_state():
         dump(states, w)
 
 
-
 def set_warning_display(state):
     config["show_rewind_warning"] = False if state else True
     save_config()
@@ -154,7 +150,6 @@ def rewind(warning=True):
     stack_mem = ""
 
     for i, v in stack:
-        print i, v
         v = v[1][v[1].find("0x") + 2:]
         end = v.find("<")
         v = "".join(reversed((v[:end] if end != -1 else v).decode("HEX")))
