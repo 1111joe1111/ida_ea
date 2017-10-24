@@ -81,7 +81,7 @@ def apply_skin(init = False):
     QtWidgets.qApp.setStyleSheet(QtWidgets.qApp.styleSheet().split("/*IDA EA START*/")[0] + style)
 
 
-def toggle_apply_onstartup(state):
+def toggle_apply_on_startup(state):
     config["apply_skin_on_startup"] = True if state else False
 
 
