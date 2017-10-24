@@ -197,6 +197,11 @@ def load_config():
                     config["skins"].append(init_config["skins"][skin_names.index(i[0])])
                     print "Reinitialized %s skin" % i[0]
 
+        for k in init_config:
+            if type(config[k]) != type(init_config[k]):
+                config[k] = init_config[k]
+                print "Reinitialized incorrect value in config file"
+
     save_config()
 
 
