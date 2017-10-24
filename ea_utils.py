@@ -185,22 +185,22 @@ def load_config():
         # Check config file integrety
         if len(config["current_skin"]) != 14:
             config["current_skin"] = init_config["current_skin"]
-            print "Errors in current_skin found, Reinitializing"
+            print "IDA EA: Errors in current_skin found, Reinitializing"
 
         for i in config["skins"][:]:
             if len(i) != 15:
                 config["skins"].remove(i)
-                print "Errors found in %s skin found, Removing" % i[0]
+                print "IDA EA: Errors found in %s skin found, Removing" % i[0]
                 # Check if skin in init_config
                 skin_names = [a[0] for a in init_config["skins"]]
                 if i[0] in skin_names:
                     config["skins"].append(init_config["skins"][skin_names.index(i[0])])
-                    print "Reinitialized %s skin" % i[0]
+                    print "IDA EA: Reinitialized %s skin" % i[0]
 
         for k in init_config:
             if type(config[k]) != type(init_config[k]):
                 config[k] = init_config[k]
-                print "Reinitialized incorrect value in config file"
+                print "IDA EA: Reinitialized incorrect value in config file"
 
     save_config()
 
