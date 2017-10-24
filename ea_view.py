@@ -12,25 +12,24 @@ from time import sleep
 
 class Hook(DBG_Hooks):
 
-    def __init__(self, send):
+    def __init__(self):
         DBG_Hooks.__init__(self)
-        self.send = send
 
     def dbg_bpt(self, tid, ea):
         if get_bp(ea) == 9:
-            self.send()
+            send()
         return 0
 
     def dbg_step_into(self):
-        self.send()
+        send()
         return 0
 
     def dbg_step_until_ret(self):
-        self.send()
+        send()
         return 0
 
     def dbg_step_over(self):
-        self.send()
+        send()
         return 0
 
 
@@ -106,6 +105,10 @@ def close(event):
 
 
 def send():
+
+    if config["current_skin"] != current_skin:
+        set_style()
+
     results = deref_mem()
     states.append(results)
     format_mem(results)
@@ -153,7 +156,9 @@ def ea_view():
     global form
     global a
     global style
+    global current_skin
 
+    current_skin = copy(config["current_skin"])
     set_style()
 
     a = QtWidgets.QFrame()
@@ -174,13 +179,16 @@ def ea_view():
     a.show()
     a_sync(anchor_scrollbar)
 
-    h = Hook(send)
+    h = Hook()
     h.hook()
 
 
 def set_style():
 
     global style
+    global current_skin
+
+    current_skin = config["current_skin"]
 
     style = (
         (
@@ -207,6 +215,7 @@ registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
 
 style =  ""
 states = []
+current_skin = None
 h = None
 scroll = False
 view_open = True

@@ -384,7 +384,7 @@ class Heap_UI(object):
 class Reskin_UI(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
-        Form.resize(386, 548)
+        Form.resize(395, 548)
         self.verticalLayout = QtGui.QVBoxLayout(Form)
         self.verticalLayout.setObjectName("verticalLayout")
         self.horizontalLayout_10 = QtGui.QHBoxLayout()
