@@ -3,7 +3,7 @@ from api_funcs import *
 from cPickle import dump
 from copy import copy
 from ea_UI import View_UI
-from ea_utils import QtWidgets, a_sync, cPrint, config, get_bits, get_mem_recursive, parse_mem, save_config
+from ea_utils import QtWidgets, a_sync, cPrint, config, get_bits, get_mem_recursive, parse_mem, save_config, ea_warning
 from idaapi import *
 from idautils import *
 from idc import *
@@ -54,10 +54,12 @@ def deref_mem():
     int_size = 4 if get_bits() else 8
 
     for i, reg in [(i, getattr(cpu, i)) for i in registers]:
+
+        print i, hex(reg)
+
         regions = []
         get_mem_recursive(reg, regions, int_size=int_size)
         results[0].append((i, regions))
-
     for i in range(0, config["stack_display_length"]):
         regions = []
         get_mem_recursive(cpu.rsp + (i*int_size), regions, int_size=int_size)
@@ -125,21 +127,37 @@ def dump_state():
         dump(states, w)
 
 
-def rewind():
+
+def set_warning_display(state):
+    config["show_rewind_warning"] = False if state else True
+    save_config()
+
+
+def rewind(warning=True):
+
+    if warning and config["show_rewind_warning"]:
+        ea_warning("Rewind will restore programme state in the scope of the context shown by EA View.\n"
+                   "Changes made outside this scope (eg. heap, data sections) will not be restored. Continue?",
+                   buttons=(("Yes", lambda :rewind(warning=False), True), ("No", None, True)),
+                   checkboxes=(("Don't show this warning again", set_warning_display, False),))
+        return
 
     regs, stack = states[form.listWidget.currentRow()]
 
     for i, v in regs:
-        v = v[0][v[0].find(">0x") + 3:]
-        v = int(v[:v.find("<")],16)
+        v = v[0][v[0].find("0x") + 2:]
+        end = v.find("<")
+        v = int(v[:end] if end != -1 else v, 16)
         set_rg(i,v)
 
     rsp = get_rg("RSP")
     stack_mem = ""
 
     for i, v in stack:
-        v = v[0][v[0].find(">0x") + 3:]
-        v = "".join(reversed(v[:v.find("<")].decode("HEX")))
+        print i, v
+        v = v[1][v[1].find("0x") + 2:]
+        end = v.find("<")
+        v = "".join(reversed((v[:end] if end != -1 else v).decode("HEX")))
         stack_mem += v
 
     dbg_write_memory(rsp, stack_mem)

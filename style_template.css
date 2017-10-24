@@ -1,10 +1,5 @@
 /*IDA EA START*/
 
-
-
-
-
-
 QWidget, QMenuBar, QMenuBar::item, QTabBar::tab, QTextEdit, QTableView  {
     background-color: {0};
     color: {1};
@@ -49,7 +44,7 @@ QHeaderView::section {
     border-style: solid;
     border-left-width: 1px;
     border-right-width: 0px;
-    border-left-color: #212121;
+    border-left-color: {5};
 
 }
 
@@ -128,7 +123,6 @@ QComboBox::drop-down {
     border-left-width: 0px;
 }
 
-/* Close, maximize and undock button for dock widgets */
 IDADockWidget > QWidget > QAbstractButton {
     background-color: {2};
     border-radius: 3px;

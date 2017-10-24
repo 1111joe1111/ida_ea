@@ -1,5 +1,4 @@
 import time
-
 from api_funcs import *
 from ea_UI import Trace_UI, QtWidgets
 from ea_utils import config, ea_warning, root_dir, save_config
@@ -47,9 +46,9 @@ def dump():
     dump_loc = config["trace_dir"] + ("/" if "/" in config["trace_dir"] else "\\") + str(int(time.time())) + ".pickle"
     df.to_pickle(dump_loc)
     ea_warning("Dumped IDA Trace to " + dump_loc,
-               (("Open Folder", lambda: Popen("explorer " + config["trace_dir"], shell=True)),
-                ("Open In Console", lambda: open_in_console(dump_loc))),
-               "EA Trace")
+               buttons=(("Open Folder", lambda: Popen("explorer " + config["trace_dir"], shell=True), False),
+                ("Open In Console", lambda: open_in_console(dump_loc), False)),
+               title="EA Trace")
 
     trace = []
 

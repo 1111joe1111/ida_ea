@@ -104,23 +104,32 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
     iterations = 0
 
 
-def ea_warning(text, additional_buttons=[], title="EA Warning"):
+def ea_warning(text, buttons=(("OK", None, True),), checkboxes=[], title="EA Warning"):
 
     global warning
     global form
-    global buttons
 
     warning = QtWidgets.QFrame()
     form = Warning_UI()
     form.setupUi(warning)
     form.label.setText(text)
-    form.pushButton.clicked.connect(warning.close)
 
-    for button, handler in additional_buttons:
+    for button, handler, close_on_click in buttons:
         setattr(form, button, QtWidgets.QPushButton(warning))
-        getattr(form, button).clicked.connect(handler)
+        getattr(form, button).clicked.connect(handler if handler else warning.close)
         getattr(form, button).setText(QtWidgets.QApplication.translate("Dialog", button, None))
+
+        if close_on_click:
+            getattr(form, button).clicked.connect(warning.close)
+
         form.horizontalLayout.addWidget(getattr(form, button))
+
+    for checkbox, handler, checked in checkboxes:
+        setattr(form, checkbox, QtWidgets.QCheckBox(warning))
+        getattr(form, checkbox).stateChanged.connect(handler)
+        getattr(form, checkbox).setText(QtWidgets.QApplication.translate("Dialog", checkbox, None))
+        getattr(form, checkbox).setChecked(checked)
+        form.horizontalLayout_2.addWidget(getattr(form, checkbox))
 
     warning.setWindowFlags(warning.windowFlags() | QtCore.Qt.WindowStaysOnTopHint)
     warning.setWindowTitle(QtWidgets.QApplication.translate("Dialog", title, None))
@@ -142,6 +151,7 @@ def load_config():
         "trace_dir": "",
         "stack_display_length": 25,
         "apply_skin_on_startup": True,
+        "show_rewind_warning": True,
         "match_background": True,
         "current_skin": ["1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff", '1c1c2a', 'FFFFFF', '00FFFF', 'C4F0C5', '737DFF'],
         "skins": [["Neon Dark", "212121", "ffffff", "414141", "00fff7", "ffffff", "282828", "ffffff", "00ffea", "ffffff", '212121', 'FFFFFF', '00FFFF', 'C4F0C5', '737DFF'],

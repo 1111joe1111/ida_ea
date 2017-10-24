@@ -148,7 +148,6 @@ def ea_reskin():
         form.checkBox_2.setChecked(True)
         buttons[9][0].setStyleSheet("background: #" + buttons[0][0].styleSheet().split("#")[1])
 
-
 a = None
 form = None
 buttons = None
