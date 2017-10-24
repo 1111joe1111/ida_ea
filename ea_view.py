@@ -154,21 +154,7 @@ def ea_view():
     global a
     global style
 
-
-    style = (
-        ("<style> "
-         r"div{") +
-        (r"color:white;background-color:#212121;" if config["current_skin"][0] not in ("1c1c2a", "212121") else "")
-        +
-        (
-            "font-family:Hack;font-size:14px}\n"
-            ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}\n"
-            ".blue{color:'#00FFFF'}"
-            ".red{}"
-            ".green{color:'#C4F0C5'}"
-            ".yellow{color:'#737DFF'}"
-            "</style>")
-    )
+    set_style()
 
     a = QtWidgets.QFrame()
     form = View_UI()
@@ -186,18 +172,40 @@ def ea_view():
     form.spinBox.setValue(config["stack_display_length"])
     a.closeEvent = close
     a.show()
-
     a_sync(anchor_scrollbar)
 
     h = Hook(send)
     h.hook()
 
 
+def set_style():
+
+    global style
+
+    style = (
+        (
+            "<style>"
+            "div{color:white;"
+            "background-color:#%s;"
+            "font-family:Hack;font-size:14px}"
+            ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}"
+            ".valid{color:'#%s'}"
+            ".code{color:'#%s'}"
+            ".string{color:'#%s'}"
+            ".null{color:'#%s'}"
+            "</style>" % ((config["current_skin"][0] if config["match_background"] else config["current_skin"][9]),
+                          config["current_skin"][11],
+                          config["current_skin"][10],
+                          config["current_skin"][12],
+                          config["current_skin"][13])
+        )
+    )
+
+
 registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
              "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15")
 
-style = ""
-
+style =  ""
 states = []
 h = None
 scroll = False

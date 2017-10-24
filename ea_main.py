@@ -1,13 +1,14 @@
 from ea_cmd import ea_cmd
 from ea_emu_client import ea_emulate
 from ea_heap import ea_heap
-from ea_skin import apply_initial_skin, ea_reskin
+from ea_skin import apply_skin, ea_reskin
 from ea_trace import ea_trace
 from ea_utils import QtWidgets, config
 from ea_view import ea_view
 
 if config["apply_skin_on_startup"]:
-    apply_initial_skin()
+    apply_skin(init=True)
+    # apply_initial_skin()
 
 menu_bar = next(i for i in QtWidgets.qApp.allWidgets() if isinstance(i, QtWidgets.QMenuBar))
 menu = menu_bar.addMenu("IDA EA")

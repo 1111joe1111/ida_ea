@@ -74,21 +74,21 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
     if codeSegment and codeStart < mem < codeEnd:
         offset = GetFuncOffset(mem)
         if offset:
-            text = cPrint(b_red, "0x" + mem_str) + cPrint(b_red, " &lt;" + offset + "&gt;")
+            text = cPrint("code", "0x" + mem_str) + cPrint(b_red, " &lt;" + offset + "&gt;")
             code = True
 
     if not offset:
         if perm or not get_perm:
-            text = cPrint(b_lightblue, "0x" + mem_str)
+            text = cPrint("valid", "0x" + mem_str)
         elif next((False for i in mem_str if i != "0"), True):
-            text = cPrint(b_yellow, "0x" + mem_str)  # + "(NULL)"
+            text = cPrint("null", "0x" + mem_str)  # + "(NULL)"
         else:
             text = "0x" + mem_str
 
         if next((False for i in reversed(mem_str.decode("HEX")) if i not in printable), True) and prev_mem:
             r_mem = dbg_read_memory(prev_mem, 50)
             if r_mem:
-                text += '(' + cPrint(b_green, '"' + r_mem.split("\x00")[0].replace("\n", "") + '"') + ')'
+                text += '(' + cPrint("string", '"' + r_mem.split("\x00")[0].replace("\n", "") + '"') + ')'
 
         code = False
 
@@ -142,9 +142,10 @@ def load_config():
         "trace_dir": 0,
         "stack_display_length": 25,
         "apply_skin_on_startup": True,
-        "current_skin": ["1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff"],
-        "skins": [["Neon Dark", "212121", "ffffff", "414141", "00fff7", "ffffff", "282828", "ffffff", "00ffea", "ffffff"],
-                  ["Neon Blue", "1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff"]]
+        "match_background": True,
+        "current_skin": ["1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff", '1c1c2a', 'FFFFFF', '00FFFF', 'C4F0C5', '737DFF'],
+        "skins": [["Neon Dark", "212121", "ffffff", "414141", "00fff7", "ffffff", "282828", "ffffff", "00ffea", "ffffff", '212121', 'FFFFFF', '00FFFF', 'C4F0C5', '737DFF'],
+                  ["Neon Blue", "1c1c2a", "ffffff", "818181", "00d5ff", "ffffff", "202030", "ffffff", "00e6ff", "ffffff", '1c1c2a', 'FFFFFF', '00FFFF', 'C4F0C5', '737DFF']]
     }
 
     if not isfile(root_dir + "config.json"):
@@ -163,6 +164,13 @@ def load_config():
         for i,v in init_config.items():
             if i not in config:
                 config[i] = v
+
+        if len(config["current_skin"]) == 9:
+            # Add new settings
+            new_settings = ['212121', 'FFFFFF', '00FFFF', 'C4F0C5', '737DFF']
+            config["current_skin"] += new_settings
+            for i in config["skins"]:
+                i += new_settings
 
     save_config()
 

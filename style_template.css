@@ -1,5 +1,10 @@
 /*IDA EA START*/
 
+
+
+
+
+
 QWidget, QMenuBar, QMenuBar::item, QTabBar::tab, QTextEdit, QTableView  {
     background-color: {0};
     color: {1};
@@ -161,4 +166,20 @@ CLIWidget > QGroupBox > QPushButton
 
 CLIWidget > QGroupBox {
     margin-top: 0;
+}
+
+
+IDAView {
+    font-family: {Disassembly Name};
+    font-size: {Disassembly Size};
+}
+
+hexview_t {
+    font-family: {Hex View Name};
+    font-size: {Hex View Size}pt;
+}
+
+CustomIDAMemo, EditContainer {
+    font-family: {Text input Name};
+    font-size: {Text input Size}pt;
 }
