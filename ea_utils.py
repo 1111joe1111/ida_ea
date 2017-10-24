@@ -139,7 +139,7 @@ def load_config():
 
     init_config = {
         "libc_offsets": [0, 0, 0, 0],
-        "trace_dir": 0,
+        "trace_dir": "",
         "stack_display_length": 25,
         "apply_skin_on_startup": True,
         "match_background": True,
@@ -171,6 +171,21 @@ def load_config():
             config["current_skin"] += new_settings
             for i in config["skins"]:
                 i += new_settings
+
+        # Check config file integrety
+        if len(config["current_skin"]) != 14:
+            config["current_skin"] = init_config["current_skin"]
+            print "Errors in current_skin found, Reinitializing"
+
+        for i in config["skins"][:]:
+            if len(i) != 15:
+                config["skins"].remove(i)
+                print "Errors found in %s skin found, Removing" % i[0]
+                # Check if skin in init_config
+                skin_names = [a[0] for a in init_config["skins"]]
+                if i[0] in skin_names:
+                    config["skins"].append(init_config["skins"][skin_names.index(i[0])])
+                    print "Reinitialized %s skin" % i[0]
 
     save_config()
 
