@@ -136,6 +136,29 @@ def ea_warning(text, buttons=(("OK", None, True),), checkboxes=[], title="EA War
     warning.show()
 
 
+def set_style():
+
+    global style
+
+    style = str(
+        (
+            "<style>"
+            "div, p, span{color:white;"
+            "background-color:#%s;"
+            "font-family:Hack;font-size:14px}"
+            ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}"
+            ".valid{color:'#%s'}"
+            ".code{color:'#%s'}"
+            ".string{color:'#%s'}"
+            ".null{color:'#%s'}"
+            "</style>" % ((config["current_skin"][0] if config["match_background"] else config["current_skin"][9]),
+                          config["current_skin"][11],
+                          config["current_skin"][10],
+                          config["current_skin"][12],
+                          config["current_skin"][13])
+        )
+    )
+
 def save_config():
 
     with open(root_dir + "config.json", "w") as w:
@@ -200,7 +223,7 @@ def load_config():
         for k in init_config:
             if type(config[k]) != type(init_config[k]):
                 config[k] = init_config[k]
-                print "IDA EA: Reinitialized incorrect value in config file"
+                print "IDA EA: Reinitialized incorrect value %s in config file" % k
 
     save_config()
 
@@ -238,8 +261,8 @@ _32_bit = None
 root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
 warning = None
 config = None
+threads = []
+style = ""
 
 load_config()
-
-threads = []
-
+set_style()

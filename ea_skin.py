@@ -1,5 +1,5 @@
 from ea_UI import QtGui, QtWidgets, QtCore, Name_UI, Reskin_UI
-from ea_utils import config, root_dir, save_config
+from ea_utils import config, root_dir, save_config, set_style
 from idaapi import *
 
 
@@ -77,6 +77,8 @@ def apply_skin(init = False):
     if not init:
         config["current_skin"] = [item[2] for item in buttons]
         save_config()
+
+    set_style()
 
     QtWidgets.qApp.setStyleSheet(QtWidgets.qApp.styleSheet().split("/*IDA EA START*/")[0] + style)
 

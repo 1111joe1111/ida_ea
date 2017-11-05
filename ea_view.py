@@ -3,7 +3,7 @@ from api_funcs import *
 from cPickle import dump
 from copy import copy
 from ea_UI import View_UI
-from ea_utils import QtWidgets, a_sync, cPrint, config, get_bits, get_mem_recursive, parse_mem, save_config, ea_warning
+from ea_utils import QtWidgets, a_sync, cPrint, config, get_bits, get_mem_recursive, parse_mem, save_config, ea_warning, style
 from idaapi import *
 from idautils import *
 from idc import *
@@ -105,9 +105,6 @@ def close(event):
 
 def send():
 
-    if config["current_skin"] != current_skin:
-        set_style()
-
     results = deref_mem()
     states.append(results)
     format_mem(results)
@@ -168,11 +165,6 @@ def ea_view():
     global h
     global form
     global a
-    global style
-    global current_skin
-
-    current_skin = copy(config["current_skin"])
-    set_style()
 
     a = QtWidgets.QFrame()
     form = View_UI()
@@ -196,39 +188,10 @@ def ea_view():
     h.hook()
 
 
-def set_style():
-
-    global style
-    global current_skin
-
-    current_skin = config["current_skin"]
-
-    style = (
-        (
-            "<style>"
-            "div{color:white;"
-            "background-color:#%s;"
-            "font-family:Hack;font-size:14px}"
-            ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}"
-            ".valid{color:'#%s'}"
-            ".code{color:'#%s'}"
-            ".string{color:'#%s'}"
-            ".null{color:'#%s'}"
-            "</style>" % ((config["current_skin"][0] if config["match_background"] else config["current_skin"][9]),
-                          config["current_skin"][11],
-                          config["current_skin"][10],
-                          config["current_skin"][12],
-                          config["current_skin"][13])
-        )
-    )
-
-
 registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
              "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15")
 
-style =  ""
 states = []
-current_skin = None
 h = None
 scroll = False
 view_open = True

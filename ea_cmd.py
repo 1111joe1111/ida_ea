@@ -3,7 +3,7 @@
 from api_funcs import *
 from copy import copy
 from ea_UI import Cmd_UI
-from ea_utils import QtWidgets, ea_warning, get_bits, get_mem_recursive, parse_mem
+from ea_utils import QtWidgets, ea_warning, get_bits, get_mem_recursive, parse_mem, style
 from idaapi import *
 from idautils import *
 from idc import *
@@ -153,15 +153,3 @@ max_iterations = 10
 iterations = 0
 a = None
 form = None
-
-style = (
-    "<style> span{color:white;}\n "
-    r"p, span{font-family:Hack;font-size:14px;}"
-    ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}\n"
-    ".blue{color:'#00FFFF'}"
-    ".red{color:'white'}"
-    ".green{color:'#C4F0C5'}"
-    ".yellow{color:'#737DFF'}"
-    ".yellow{color:'#737DFF'}"
-    "</style>"
-)
