@@ -140,24 +140,32 @@ def set_style():
 
     global style
 
+    s = QtCore.QSettings()
+    s.beginGroup("Font")
+    s.beginGroup("Disassembly")
+    font_name = s.value("Name")
+
     style[0] = str(
         (
             "<style>"
             "div, p, span{color:white;"
             "background-color:#%s;"
-            "font-family:Hack;font-size:14px}"
+            "font-family:%s;font-size:14px}"
             ".title{font-family:Ariel;font-size:14px;padding-top:1000px;}"
             ".valid{color:'#%s'}"
             ".code{color:'#%s'}"
             ".string{color:'#%s'}"
             ".null{color:'#%s'}"
-            "</style>" % ((config["current_skin"][0] if config["match_background"] else config["current_skin"][9]),
+            "</style>" % (
+                          (config["current_skin"][0] if config["match_background"] else config["current_skin"][9]),
+                          font_name,
                           config["current_skin"][11],
                           config["current_skin"][10],
                           config["current_skin"][12],
                           config["current_skin"][13])
         )
     )
+
 
 def save_config():
 
@@ -266,3 +274,5 @@ style = [""]
 
 load_config()
 set_style()
+
+
