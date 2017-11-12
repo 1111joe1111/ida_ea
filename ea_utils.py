@@ -140,7 +140,7 @@ def set_style():
 
     global style
 
-    style = str(
+    style[0] = str(
         (
             "<style>"
             "div, p, span{color:white;"
@@ -262,7 +262,7 @@ root_dir = __file__[:max(__file__.rfind("/"), __file__.rfind("\\"), 0)] + "/"
 warning = None
 config = None
 threads = []
-style = ""
+style = [""]
 
 load_config()
 set_style()

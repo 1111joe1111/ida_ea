@@ -71,7 +71,7 @@ def format_mem(results, append=True):
 
     regs, stack = results
 
-    string = copy(style)
+    string = copy(style[0])
     string += "<div>"
     string += "".join((i + "&nbsp;"*(4-len(i)) + parse_mem(mem) + "\n") + "<br>" for i, mem in regs)
     string = string[:-4]
@@ -79,7 +79,10 @@ def format_mem(results, append=True):
     form.textEdit.clear()
     form.textEdit.insertHtml(string)
 
-    string = copy(style)
+
+    print string
+
+    string = copy(style[0])
     string += "<div>"
     string += "".join((cPrint("red", "RSP+%s&nbsp;" %  "{:03x}".format(i)) + parse_mem(mem)) + "<br>" for i, mem in stack)
     string += "</div>"

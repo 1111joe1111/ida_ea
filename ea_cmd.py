@@ -13,7 +13,7 @@ from time import sleep, time
 
 def get(addr, int_size, n=20):
 
-    string = copy(style)
+    string = copy(style[0])
     string += "<p>"
 
     for x in range(n):
@@ -43,7 +43,7 @@ def find(arg, int_size):
         else:
             break
 
-    string = copy(style)
+    string = copy(style[0])
     string += "<p>"
 
     for addr in matches:
