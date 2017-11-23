@@ -14,7 +14,7 @@ def select_color(i):
     if not (i == 9 and config["match_background"]):
         global color
         color = QtWidgets.QColorDialog()
-        color.setCustomColor(0, 0x212121)
+        # color.setCustomColor(0, 0x212121)
         color.setCurrentColor(QtGui.QColor.fromRgb(int(buttons[i][0].styleSheet().split("#")[1], 16)))
         color.colorSelected.connect(lambda color: color_selected(i, color))
         color.open()
@@ -63,16 +63,22 @@ def apply_skin(init = False):
     skin_values = config["current_skin"][:9] if init else (item[2] for item in buttons)
 
     for i, c in enumerate(item for item in skin_values):
-        style = style.replace("{%s}" % (i), "#" + c)
+    	style = style.replace("{%s}" % (i), "#" + c)
 
     for group in ("Disassembly", "Hex View", "Text input"):
-        s = QtCore.QSettings()
-        s.beginGroup("Font")
-        s.beginGroup(group)
-        font_name = s.value("Name")
-        font_size = s.value("Size")
-        style = style.replace("{%s %s}" % (group, "Name"), font_name)
-        style = style.replace("{%s %s}" % (group, "Size"), str(font_size))
+
+        try: 
+            s = QtCore.QSettings()
+            s.beginGroup("Font")
+            s.beginGroup(group)
+            font_name = s.value("Name")
+            font_size = s.value("Size")
+            style = style.replace("{%s %s}" % (group, "Name"), font_name)
+            style = style.replace("{%s %s}" % (group, "Size"), str(font_size))
+        except:
+            pass
+
+
 
     if not init:
         config["current_skin"] = [item[2] for item in buttons]

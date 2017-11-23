@@ -53,13 +53,13 @@ def deref_mem():
 
     int_size = 4 if get_bits() else 8
 
-    for i, reg in [(i, getattr(cpu, i)) for i in registers]:
+    for i, reg in [(i, get_rg(i)) for i in (x64_registers if int_size == 8 else x86_registers)]:
         regions = []
         get_mem_recursive(reg, regions, int_size=int_size)
         results[0].append((i, regions))
     for i in range(0, config["stack_display_length"]):
         regions = []
-        get_mem_recursive(cpu.rsp + (i*int_size), regions, int_size=int_size)
+        get_mem_recursive(get_rg("RSP") + (i*int_size), regions, int_size=int_size)
         results[1].append((i*int_size, regions))
 
     return results
@@ -78,9 +78,6 @@ def format_mem(results, append=True):
     string += "</div>"
     form.textEdit.clear()
     form.textEdit.insertHtml(string)
-
-
-    print string
 
     string = copy(style[0])
     string += "<div>"
@@ -191,8 +188,10 @@ def ea_view():
     h.hook()
 
 
-registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
+x64_registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
              "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15")
+
+x86_registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP")
 
 states = []
 h = None
