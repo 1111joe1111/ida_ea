@@ -59,7 +59,7 @@ def deref_mem():
         results[0].append((i, regions))
     for i in range(0, config["stack_display_length"]):
         regions = []
-        get_mem_recursive(get_rg("RSP") + (i*int_size), regions, int_size=int_size)
+        get_mem_recursive(get_rg("RSP" if int_size == 8 else "ESP") + (i*int_size), regions, int_size=int_size)
         results[1].append((i*int_size, regions))
 
     return results
@@ -70,7 +70,7 @@ def format_mem(results, append=True):
     global scroll
 
     regs, stack = results
-
+    int_size = 4 if get_bits() else 8
     string = copy(style[0])
     string += "<div>"
     string += "".join((i + "&nbsp;"*(4-len(i)) + parse_mem(mem) + "\n") + "<br>" for i, mem in regs)
@@ -81,14 +81,14 @@ def format_mem(results, append=True):
 
     string = copy(style[0])
     string += "<div>"
-    string += "".join((cPrint("red", "RSP+%s&nbsp;" %  "{:03x}".format(i)) + parse_mem(mem)) + "<br>" for i, mem in stack)
+    string += "".join((cPrint("red", ("RSP" if int_size == 8 else "ESP") + "+%s&nbsp;" %  "{:03x}".format(i)) + parse_mem(mem)) + "<br>" for i, mem in stack)
     string += "</div>"
     form.textEdit_2.clear()
     form.textEdit_2.insertHtml(string)
-    offset = GetFuncOffset(cpu.rip)
+    offset = GetFuncOffset(get_rg("RIP" if int_size == 8 else "EIP"))
 
     if append:
-        form.listWidget.addItem(offset if offset else hex(cpu.rip).replace("L", ""))
+        form.listWidget.addItem(offset if offset else hex(cpu.rip if int_size == 8 else cpu.eip).replace("L", ""))
         scroll = True
 
 
@@ -143,7 +143,7 @@ def rewind(warning=True):
         v = int(v[:end] if end != -1 else v, 16)
         set_rg(i,v)
 
-    rsp = get_rg("RSP")
+    rsp = get_rg("RSP" if get_bits() == 8 else "ESP")
     stack_mem = ""
 
     for i, v in stack:
@@ -191,7 +191,7 @@ def ea_view():
 x64_registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP",
              "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15")
 
-x86_registers = ("RAX", "RBX","RCX", "RDX","RDI", "RSI", "RSP", "RBP", "RIP")
+x86_registers = ("EAX", "EBX","ECX", "EDX","EDI", "ESI", "ESP", "EBP", "EIP")
 
 states = []
 h = None

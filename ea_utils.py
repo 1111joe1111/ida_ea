@@ -55,8 +55,6 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
 
     mem_str = hex(mem)[2:].strip("L").zfill(int_size * 2)
 
-    print "memstr: %s" % mem_str
-
     if get_perm:
         try:
             perm = bin(GetSegmentAttr(mem, SEGATTR_PERM))[2:].zfill(3)
@@ -102,8 +100,6 @@ def get_mem_recursive(mem, matches, prev_mem=False, get_perm=True, int_size=4):
             get_mem_recursive(int("".join(reversed(next_mem)).encode("HEX"), 16), matches, mem, int_size=int_size)
 
     iterations = 0
-
-    print "DONE!"
 
 
 def ea_warning(text, buttons=(("OK", None, True),), checkboxes=[], title="EA Warning"):
@@ -160,7 +156,7 @@ def set_style():
             ".null{color:'#%s'}"
             "</style>" % (
                           (config["current_skin"][0] if config["match_background"] else config["current_skin"][9]),
-                          font_name,
+                          "consolas",
                           config["current_skin"][11],
                           config["current_skin"][10],
                           config["current_skin"][12],
